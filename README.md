@@ -440,3 +440,47 @@ moves the needle:
 3. Directory listings (above) — good for backlinks, weak for visits
 4. IndexNow → Bing/Yandex indexing
 5. Never click your own ads — one self-click can cost the account
+
+---
+
+## 12. 📡 Directory push round 2 + the share card — 2026-09-28
+
+### What the second round of listings found
+
+The "submit your PWA everywhere" route was researched against the crawler-readable
+shortlist (only three of the big four directories are readable — see §11) plus the
+`awesome-pwa` App Directories list:
+
+| Destination | Result |
+|---|---|
+| **awesome-pwa** (GitHub, curated) | ✅ **PR #519 open** → https://github.com/hemanth/awesome-pwa/pull/519 — added under *Apps → Education and Reading* |
+| **PWAStore.io** | ✅ live → https://www.pwastore.io/app/still-here |
+| **pwa.directory** | ⏳ `in_review`, id `45d0df0d-2450-4a0b-b870-d4dd44268e28` |
+| **pwaindex.io** | ⚠️ account created **and email verified**, but submission is blocked by *their* bug: the duplicate check matches on host suffix, so every `*.github.io` URL is told "already in the index" (it offers someone else's portfolio). Needs their fix. |
+| **webappfinder.app** | ❌ "Add an app" is a **curator tool** — it only generates JSON for their own `src/data/apps.json`. No public path, no repo link. |
+| **store.app** | ❌ still HTTP 502 (their outage) |
+| **AlternativeTo** | ❌ Cloudflare Turnstile never resolves from this IP — same failure as the Adsterra dashboard |
+| **findpwa.com** | ❌ 33-byte responses, no links out — worthless |
+
+> Note: anything fronted by Cloudflare Turnstile (AlternativeTo, Adsterra dashboard)
+> cannot be completed from this machine. That is an IP problem, not a form problem —
+> the same credentials work from a residential connection.
+
+### 🔴 `og:image` was an SVG — every shared link had no picture
+
+Telegram, X, Facebook and LinkedIn **ignore SVG** for Open Graph images. The tag
+pointed at `logo.svg`, so link previews came through bare.
+
+- Generated **`og.png`, 1200×630**, from `make-og.py` (PIL; floods the icon's
+  opaque black square out from the border so the *interior* black outlines survive)
+- `og:image`, `og:image:width/height/type/alt` and `twitter:image` all point at it now
+- Verified live: `GET /still-here/og.png` → `200`, `content-type: image/png`
+
+Regenerate after copy changes:
+
+```
+python make-og.py
+```
+
+**Do this before sharing anywhere** — a bare link gets roughly the click-through of
+a link with a picture.
