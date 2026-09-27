@@ -28,13 +28,14 @@ const AD_CONFIG = {
   enabled: true,
   provider: "adsterra",            // "adsterra" | "adsense" | "off"
 
-  /* ---- Track 1: Adsterra (USDT → Trust Wallet) ----
-     Paste the KEY of each ad unit from your Adsterra dashboard.
-     Create 3 units: 728×90 or responsive banner · 300×250 · 300×250  */
+  /* ---- Track 1: Adsterra (USDT → Trust Wallet) — CONNECTED ✅
+     Account: akhob59@… · Site: fyosamu.github.io (Active)
+     Unit 31429909 = Banner 728×90  ·  Unit 31429908 = Banner 300×250
+     Dashboard: beta.publishers.adsterra.com/websites  */
   adsterra: {
-    feed:    "",   // 👈 e.g. "a1b2c3d4e5f6g7h8"
-    reader:  "",   // 👈 in-article banner
-    overlay: ""    // 👈 the 300×250 shown before every card
+    feed:    "7f16d3b502399b57ed184d4115a85d56",   // 728×90  — in-feed banner
+    reader:  "2d097414e61e7e1d6913a1ad20010a1c",   // 300×250 — inside the article
+    overlay: "2d097414e61e7e1d6913a1ad20010a1c"    // 300×250 — before every card
   },
 
   /* ---- Track 2: AdSense (bank payout) — fill in once approved ---- */
@@ -143,7 +144,8 @@ function mountAd(box, which, w, h) {
     conf.text = `atOptions = { 'key':'${key}', 'format':'iframe', 'height':${h}, 'width':${w}, 'params':{} };`;
     const loader = document.createElement("script");
     loader.type = "text/javascript";
-    loader.src = `https://www.highperformanceformat.com/${key}.js`;
+    /* Adsterra's live snippet: /{key}/invoke.js  (NOT highperformanceformat) */
+    loader.src = `https://www.highrevenueformat.com/${key}/invoke.js`;
     loader.async = true;
     box.appendChild(conf);
     box.appendChild(loader);
@@ -235,7 +237,10 @@ function showOverlay(target) {
      ad *shown*, and we must never hold a visitor for an ad that never arrived. */
   const start = Date.now();
   const fillWatch = setInterval(() => {
-    const iframe = adBox.querySelector("iframe");
+    /* Only a real rendered <iframe> counts as "an ad is on screen".
+       Adsterra may append it inside the box OR to document.body — cover both. */
+    const iframe = adBox.querySelector("iframe") ||
+                   document.querySelector('iframe[src*="highrevenueformat"]');
     if (iframe) {
       adBox.querySelector(".ad-wait")?.remove();
       clearInterval(fillWatch);
@@ -272,7 +277,7 @@ function openCard(ci, ii) {
   $("#reader").hidden = false;
   document.body.style.overflow = "hidden";
 
-  mountAd($("#readerAd"), "reader", 336, 280);   // fresh, only while open
+  mountAd($("#readerAd"), "reader", 300, 250);   // matches unit 31429908, only while open
   $(".modal-inner").scrollTop = 0;
 }
 
