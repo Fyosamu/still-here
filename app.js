@@ -511,6 +511,91 @@ function stars() {
 }
 
 /* ============================================================
+   9. AD CHECK — opens ONLY with ?debug=ad, never otherwise
+   ============================================================ */
+const AD_SLOTS = [
+  ["feed top (728×90)",       () => document.getElementById("feedAd")],
+  ["feed middle (728×90)",    () => document.getElementById("midAd")],
+  ["interstitial (300×250)",  () => document.querySelector(".splash-ad")],
+  ["in-reader (300×250)",     () => document.getElementById("readerAd")],
+  ["corner (300×250)",        () => document.getElementById("cornerAdBox")]
+];
+
+function initAdDebug() {
+  if (!new URLSearchParams(location.search).has("debug")) return;
+
+  const panel   = $("#adDebug");
+  const verdict = $("#adDebugVerdict");
+  const list    = $("#adDebugList");
+  const meta    = $("#adDebugMeta");
+  const copyBtn = $("#adDebugCopy");
+
+  const measure = () => AD_SLOTS.map(([label, get]) => {
+    const box = get();
+    if (!box) return { label, state: "not on this screen" };
+    if (box.querySelector("iframe")) return { label, state: "FILLED" };
+    return { label, state: box.innerHTML.indexOf("atOptions") > -1
+                           ? "requested — no ad came back"
+                           : "empty" };
+  });
+
+  const render = () => {
+    const rows = measure();
+    const filled = rows.filter((r) => r.state === "FILLED").length;
+    const anyFrame = !!document.querySelector(
+      'iframe[src*="highrevenueformat"], iframe[src*="highperformanceformat"]'
+    );
+    const good = filled > 0 || anyFrame;
+
+    verdict.textContent = good
+      ? `ADS ARE FILLING ✅  (${filled} of ${rows.length} slots on this screen)`
+      : `NO AD LOADED ❌  (0 of ${rows.length} slots)`;
+    verdict.className = "ad-debug-verdict " + (good ? "ok" : "bad");
+
+    list.innerHTML = rows.map((r) => {
+      const tag = r.state === "FILLED" ? "b" : "i";
+      return `<li>${r.label}: <${tag}>${r.state}</${tag}></li>`;
+    }).join("");
+
+    meta.textContent = [
+      `provider ${AD_CONFIG.provider} · enabled ${AD_CONFIG.enabled}`,
+      `net ${navigator.connection ? navigator.connection.effectiveType : "n/a"} · online ${navigator.onLine}`,
+      `viewport ${innerWidth}×${innerHeight}`,
+      new Date().toISOString()
+    ].join("   |   ");
+
+    return { rows, filled, good };
+  };
+
+  const asText = (r) =>
+    `STILL HERE — ad check\n${verdict.textContent}\n` +
+    r.rows.map((x) => `- ${x.label}: ${x.state}`).join("\n") +
+    `\n${meta.textContent}\nUA: ${navigator.userAgent}`;
+
+  setTimeout(() => { render(); panel.hidden = false; }, 7000);
+
+  copyBtn.addEventListener("click", async () => {
+    const r = render();
+    const txt = asText(r);
+    try {
+      await navigator.clipboard.writeText(txt);
+      flash(copyBtn, "Copied ✓");
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = txt;
+      ta.style.cssText = "position:fixed;top:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); flash(copyBtn, "Copied ✓"); }
+      catch (e2) { flash(copyBtn, "Copy failed"); }
+      ta.remove();
+    }
+  });
+
+  $("#adDebugClose").addEventListener("click", () => { panel.hidden = true; });
+}
+
+/* ============================================================
    8. BOOT
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
@@ -597,4 +682,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const pair = fromFlat(parseInt(deep, 10));
     if (pair) requestOpen(pair[0], pair[1]);
   }
+
+  initAdDebug();   // silent unless the URL carries ?debug=ad
 });
