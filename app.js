@@ -524,4 +524,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // NO entry ad — you asked for this to be off
   if (AD_CONFIG.entryAd) showOverlay(null);
+
+  /* ---- installable: offline shell + "add to home screen" ---- */
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+
+  const installBtn = $("#btnInstall");
+  let deferredPrompt = null;
+
+  addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();              // keep the browser's own banner out of the way
+    deferredPrompt = e;
+    installBtn.hidden = false;
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    try { await deferredPrompt.userChoice; } catch (e) { /* dismissed */ }
+    deferredPrompt = null;
+    installBtn.hidden = true;
+  });
+
+  addEventListener("appinstalled", () => { deferredPrompt = null; installBtn.hidden = true; });
 });

@@ -60,6 +60,11 @@ button{font-family:inherit;cursor:pointer}
 }
 .ghost-btn:hover{background:var(--panel-2);border-color:var(--a2)}
 .topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.install-btn{
+  margin-top:22px;border-color:var(--a2);color:var(--a2);
+  box-shadow:0 0 0 4px rgba(124,92,255,.10);
+}
+.install-btn:hover{background:rgba(124,92,255,.14);border-color:var(--a2)}
 
 /* ---------- hero ---------- */
 .hero{

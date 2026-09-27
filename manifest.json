@@ -1,10 +1,22 @@
 {
   "name": "Still Here",
   "short_name": "Still Here",
-  "description": "150 short reads that put your life in perspective.",
+  "description": "150 short reads that put your life in perspective — from the real math of a $30,000 apartment to the one cell that started you.",
+  "id": "./",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#04050c",
   "theme_color": "#04050c",
-  "icons": [{ "src": "logo.svg", "sizes": "any", "type": "image/svg+xml" }]
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "lifestyle", "books", "entertainment"],
+  "icons": [
+    { "src": "logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
 }
