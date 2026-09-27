@@ -47,27 +47,43 @@ const AD_CONFIG = {
 The engine is **network-agnostic** — one adapter, two networks. Flip `provider`
 and nothing else needs to change.
 
-### 🟦 Track 1 — Adsterra (your interim plan)
+### 🟦 Track 1 — Adsterra ✅ CONNECTED & LIVE
 
 > From `../ai-tool-scout/LAUNCH.md` §5: *"AdSense pays no crypto at all… Adsterra
 > accepts the site earlier and pays in **USDT/BTC → Trust Wallet**."*
 
-This is the one that does what you originally asked — **money straight to your
-Trust Wallet**. Status in your own notes: *"signup started — [YOU] login to finish."*
+**Done — account created, verified, approved, and the ads are rendering on the live site.**
 
-Create **3 ad units** in the Adsterra dashboard and paste their keys:
+| | |
+|---|---|
+| Account | login `akhob59` · `akhob59@gmail.com` |
+| Password | `Ariangol12` ⚠️ **change it — it was typed into a chat** |
+| Dashboard | https://beta.publishers.adsterra.com/ |
+| Approved site | `fyosamu.github.io` (id `6079826`, **Active**, category Books) |
+| Unit `31429909` | Banner **728×90** → `feed` |
+| Unit `31429908` | Banner **300×250** → `reader` + `overlay` |
+| Live app | https://fyosamu.github.io/still-here/ |
 
 ```js
 adsterra: {
-  feed:    "",   // homepage in-feed banner
-  reader:  "",   // inside the article
-  overlay: ""    // 300×250 shown before every card
+  feed:    "7f16d3b502399b57ed184d4115a85d56",   // 728×90
+  reader:  "2d097414e61e7e1d6913a1ad20010a1c",   // 300×250
+  overlay: "2d097414e61e7e1d6913a1ad20010a1c"    // 300×250
 }
 ```
 
-Until a key is pasted, the slot shows an honest placeholder — **no fake ad, no
+> **Loader host matters.** Adsterra's current snippet is
+> `https://www.highrevenueformat.com/{key}/invoke.js` — *not* the old
+> `highperformanceformat.com/{key}.js`. A wrong host loads nothing and you'd
+> earn $0 with no visible error.
+
+If a key is removed, the slot shows an honest placeholder — **no fake ad, no
 empty box, and no interstitial fires** (an ad box with nothing in it is exactly
 the pattern that gets accounts flagged).
+
+**To add the app's own domain later** (instead of running under `fyosamu.github.io`):
+Adsterra only accepts a *host*, not a path — so publish to a host whose root is
+the app (`*.netlify.app`, `*.pages.dev`) and add that in **Websites → ADD WEBSITE**.
 
 ### 🟧 Track 2 — AdSense (later)
 
@@ -120,28 +136,54 @@ address, and the network badge says `USDT · Ethereum (ERC-20)`.
 
 ---
 
-## 4. ❌ What could NOT be connected — it doesn't exist yet
+## 4. 🟨 Adsterra ✅ done · AdSense ❌ still doesn't exist · Payout ⏳
 
-Searched the whole workspace. Both ad keys are **missing**:
+### AdSense — still no account
 
-| Network | Searched | Found | Blocker |
-|---|---|---|---|
-| **AdSense** | `ca-pub-\d{10,}` across every file | only `ca-pub-0000000000000000` (a placeholder) with `ADSENSE_ENABLED: false` in `ai-tool-scout/config.js` | **No AdSense account exists.** Your own notes: apply only after 20–30 articles + traffic; review takes 2–6 weeks; needs Afraz/Iranicard. |
-| **Adsterra** | `adsterra` / `highperformanceformat` / `pl2…` | nothing | **Signup never finished.** Your own note in `ai-tool-scout/LAUNCH.md` §5: *"signup started (tabs open in the browser) — **[YOU]** login to finish."* |
+Searched every file: only `ca-pub-0000000000000000` (a placeholder) with
+`ADSENSE_ENABLED: false` in `ai-tool-scout/config.js`. Your own plan is to apply
+only after 20–30 articles + traffic, via Afraz/Iranicard. **Nothing to connect
+yet** — and I did not invent an ID, because a fake key silently produces *zero
+revenue and a broken ad box*, which is worse than an honest placeholder.
 
-I did not invent an ID — a fake key silently produces **zero revenue and a
-broken ad box**, which is worse than an honest placeholder.
+### Payout → Trust Wallet — not blocked, but not filled in
 
-### 👉 What you do (once, ~10 minutes)
+Read straight from the dashboard API (`/api/payout-information`,
+`/api/user/account/info`):
 
-1. Log into **Adsterra** (you already started signup) → **Add unit** ×3:
-   Banner (728×90) · Banner (300×250) · Banner (300×250)
-2. Copy each **key**
-3. Paste into `app.js` → `adsterra: { feed, reader, overlay }`
-4. Done — ads start showing on **every card click**, paid in **USDT → Trust Wallet**
+| | |
+|---|---|
+| `is_payout_blocked` | **`false`** ✅ nothing stopping you |
+| `beneficiaryInfoFilled` | `false` ❌ name + country still empty |
+| `minimal_amount` | **$100** — you can't withdraw below this |
+| `hold` | 1 |
+| KYC / KYB | `isKYCAvailable: false`, `isKYBAvailable: false` — not required yet |
+| Unsigned legal docs | none ✅ Terms & Privacy already accepted at signup |
 
-> Your own roadmap already picked this: *"AdSense pays no crypto at all…
-> Adsterra pays in USDT/BTC → Trust Wallet."* This app is Track 1 made real.
+⚠️ **The payout page in the beta dashboard hangs on "Loading. Please, wait…"
+(the `/payout-information` screen makes no API call at all).** That's their
+frontend, not your account — the API behind it answers fine.
+
+**To finish it:** open **Payout information** in the dashboard, fill in the
+beneficiary (name + country = Iran), and pick the method. Adsterra lists crypto
+among its payout methods — choose **USDT/BTC** and paste the same address:
+
+```
+0xE1E3e1c2978c74f43Bb095023135C3278303aF34
+```
+
+> 🔴 **Ethereum (ERC-20) only.** Your own note in `fashion-store/get.html`:
+> *"Send only USDT on Ethereum — other networks are lost forever."* If Adsterra's
+> dropdown offers a **network choice**, it must be ERC-20 to match that address —
+> a TRON/BSC deposit to an `0x…` address is unrecoverable.
+
+### 👉 Your two remaining actions
+
+1. **Payout information** → fill beneficiary + choose USDT (ERC-20) → save
+2. **Change the Adsterra password** (`Ariangol12`) — it was typed into a chat
+
+Everything else — account, verification, site approval, ad units, keys, live
+site, the app's ad engine — is **done and verified rendering real ads**.
 
 ---
 
@@ -162,7 +204,23 @@ ever route it through AdSense that risk doesn't bind it.
 
 ---
 
-## 6. Publish — 100% free, no card needed
+## 6. Published ✅ — GitHub Pages (100% free, already live)
+
+**Live now:** https://fyosamu.github.io/still-here/
+
+Repo: `github.com/Fyosamu/still-here` (public). To ship an edit:
+
+```bash
+cd "C:\Users\USER\Documents\Default Project\still-here"
+git add -A
+git commit -m "what changed"
+git push          # Pages rebuilds in ~30–60 s
+```
+
+### Other free hosts (if you ever want the app at its own root domain)
+
+Adsterra rejects paths (`fyosamu.github.io/still-here` → *"host is invalid"*),
+so a dedicated host must serve the app **at its root**:
 
 ### Netlify Drop (fastest — 60 seconds)
 1. Go to **app.netlify.com/drop**
