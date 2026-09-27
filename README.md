@@ -309,3 +309,134 @@ The card count in the UI updates itself — no other edit needed.
 - [x] Donation popup + QR + copy address
 - [x] About / Privacy / Contact pages, linked from every page
 - [x] **Zero JavaScript errors** on all 4 pages
+
+---
+
+## 11. 📍 Where things stand — 2026-09-28
+
+### Shipped since the first launch
+
+| Commit | What |
+|---|---|
+| `790d370` | **Corner ad** — bottom-right while reading, ✕ dismisses it for the session, re-fills at most once a minute and only while actually on screen |
+| `33ee0d6` | **Share button** (native sheet → copy link → Telegram fallback) |
+| `2b56ccd` | **Service worker + PNG/maskable icons + install prompt + SEO** (canonical, Open Graph, `WebApplication` JSON-LD) |
+| `b00de07` | **Share a single card** with a deep link — `?c=42` opens that exact card; the address bar follows whatever you're reading |
+| `9747463` | **Mid-feed ad slot** — full-width, breaking the category grid after the 4th category |
+| `c13e219` | **IndexNow** verification key (free, no account) |
+| `c5af210` | **`?debug=ad`** — an on-page ad diagnostic (see below) |
+
+**Ad placements now — 5, all with the 2 approved units:**
+
+| Slot | Unit | When |
+|---|---|---|
+| feed top | 728×90 | on page load |
+| feed middle | 728×90 | on page load |
+| interstitial | 300×250 | before **every** card click (never on entry) |
+| in-reader | 300×250 | while a card is open |
+| corner | 300×250 | while reading, refresh ≥60 s, visibility-gated |
+
+Nothing was added that blocks reading: `Continue` still unlocks after
+`adFillTimeoutMs` even if no ad ever arrives.
+
+### Directory listings (the "app store" equivalent for a PWA)
+
+Google Play and the App Store are **not** possible from Iran (developer
+registration + fees are blocked). The realistic route for a free PWA is
+directories that are readable by crawlers — per
+`pwa.directory/blog/where-to-submit-your-pwa`, only three of the big four are.
+
+| Directory | Entries | Status |
+|---|---|---|
+| **PWAStore.io** | 818 | ✅ **LIVE** → https://www.pwastore.io/app/still-here |
+| **pwa.directory** | 736 | ⏳ `in_review` — id `45d0df0d-2450-4a0b-b870-d4dd44268e28`, up to 4 weeks, receipt emailed to `akhob59@gmail.com` |
+| **store.app** | 1,350 | ❌ their `/list` returns **HTTP 502** (their outage, 4 attempts) — retry later |
+| findpwa.com | — | skip — serves 33 bytes and zero links to anything that isn't a browser |
+
+`pwaindex.io` exists too but requires creating an account (magic-link email).
+
+### Search engines
+
+IndexNow accepted a submission (**HTTP 202**) for all 4 pages — this is what
+Bing, Yandex, Seznam and DuckDuckGo's IndexNow partners use. Free, no account.
+
+```
+key          d45f585c83fde7efe6a64037511f5026
+keyLocation  https://fyosamu.github.io/still-here/d45f585c83fde7efe6a64037511f5026.txt
+endpoint     POST https://api.indexnow.org/indexnow
+```
+
+Re-submit any time after adding pages (a new key file is *not* needed):
+
+```json
+{ "host": "fyosamu.github.io",
+  "key": "d45f585c83fde7efe6a64037511f5026",
+  "keyLocation": "https://fyosamu.github.io/still-here/d45f585c83fde7efe6a64037511f5026.txt",
+  "urlList": ["https://fyosamu.github.io/still-here/"] }
+```
+
+### ⚠️ The one open question: do real visitors actually see ads?
+
+**Cannot be answered from this machine.** Every request to
+`www.highrevenueformat.com/{key}/invoke.js` returns **HTTP 403** here.
+
+It is *not* our snippet — a known-good key taken from a working third-party
+site returns 403 from this IP too. The egress IP is `62.72.160.95`
+(**AS396356 Latitude.sh** — a datacenter). A *browser* User-Agent from a
+datacenter IP is the classic bot signal; non-browser UAs get `200` with an
+empty body. Real visitors on home/mobile IPs are expected to be fine.
+
+**Check it yourself in 10 seconds:**
+
+1. Open `https://fyosamu.github.io/still-here/?debug=ad`
+2. Wait about 7 seconds
+3. Read the verdict — `ADS ARE FILLING ✅` or `NO AD LOADED ❌`
+4. Press **Copy report** and paste the text back
+
+The panel lists every slot and what happened to it. It never appears without
+`?debug=ad`.
+
+### Adsterra dashboard — cannot be opened from this machine
+
+The login form accepts the credentials, but **Cloudflare Turnstile never mounts
+its challenge iframe** here (the request to
+`challenges.cloudflare.com/cdn-cgi/challenge-platform/…` hangs forever from this
+IP), so `LOG IN` stays disabled. Confirmed with full Client-Hint headers and a
+fresh tab — it is an IP problem, not a form problem.
+
+Do these two things from **your own browser** at
+https://beta.publishers.adsterra.com/login (`akhob59` / `Ariangol12`):
+
+1. **Change the password** — it was typed into a chat.
+2. **Payout information** — the name to use is **Dazai / Osamu**.
+
+### Payout — everything researched, one screen left to fill
+
+The API behind the payout page was reverse-engineered; the form fields are known:
+
+| | |
+|---|---|
+| Method | **TETHER**, paysystem **93** (Iran) |
+| Minimum | **$100** · fee **1%** · 1–2 business days |
+| KYC | "Individuals — by request" |
+| `114` First name | **Dazai** ← as instructed |
+| `122` Last name | **Osamu** ← as instructed |
+| `112` wallet | `0xE1E3e1c2978c74f43Bb095023135C3278303aF34` |
+| `124` Full home address | still empty — the form will demand it |
+| `113` VAT number | marked required by their API — may be skippable for `user_type: 2` |
+
+> 🔴 **Match the network to the address.** Your own note in
+> `fashion-store/get.html`: *"Send only USDT on Ethereum — other networks are
+> lost forever."* If Adsterra offers a network choice next to `112`, it has to be
+> **ERC-20** to match an `0x…` address — a TRON/BSC deposit is unrecoverable.
+
+### Traffic — the honest part
+
+Everything above is plumbing. **Zero visitors = $0.** Ranked by what actually
+moves the needle:
+
+1. Share individual cards — every card now carries its own link (`?c=n`)
+2. Send the link from your Telegram (`@web_designer_DAZO`); the Share button is one tap
+3. Directory listings (above) — good for backlinks, weak for visits
+4. IndexNow → Bing/Yandex indexing
+5. Never click your own ads — one self-click can cost the account
