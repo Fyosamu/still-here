@@ -101,7 +101,10 @@ function render() {
             <span>${it.b}</span>
           </button>`).join("")}
       </div>
-    </section>`).join("");
+    </section>
+    ${ci === 3 ? `<div class="ad-slot ad-slot--mid" id="midAd">
+        <span class="ad-label">Advertisement</span>
+      </div>` : ""}`).join("");
 
   $$(".card").forEach((el) =>
     el.addEventListener("click", () => requestOpen(+el.dataset.cat, +el.dataset.i))
@@ -557,8 +560,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "ArrowLeft")  move(-1);
   });
 
-  // in-feed banner
+  // in-feed banners — one at the top, one breaking the category grid
   mountAd($("#feedAd"), "feed", 728, 90);
+  if ($("#midAd")) mountAd($("#midAd"), "feed", 728, 90);
 
   // NO entry ad — you asked for this to be off
   if (AD_CONFIG.entryAd) showOverlay(null);

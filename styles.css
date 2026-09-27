@@ -108,6 +108,8 @@ button{font-family:inherit;cursor:pointer}
   min-height:96px;display:flex;flex-direction:column;justify-content:center;
 }
 .ad-slot--banner{margin:16px 0 0;min-height:110px}
+/* full-width break between the 4th and 5th category — same unit, nothing covered */
+.ad-slot--mid{grid-column:1 / -1;margin:0;min-height:120px}
 .ad-label{
   font-size:9px;letter-spacing:.28em;color:#565D84;text-transform:uppercase;
   margin-bottom:8px;text-align:center;
