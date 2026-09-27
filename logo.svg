@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Still Here">
+  <defs>
+    <radialGradient id="face" cx="35%" cy="28%" r="78%">
+      <stop offset="0%" stop-color="#7CFFD4"/>
+      <stop offset="45%" stop-color="#3BE0C8"/>
+      <stop offset="100%" stop-color="#5B4BFF"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF7AD9"/>
+      <stop offset="50%" stop-color="#9B6BFF"/>
+      <stop offset="100%" stop-color="#4BE0FF"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- deep space disc -->
+  <circle cx="256" cy="256" r="248" fill="#05060F"/>
+
+  <!-- stars -->
+  <g fill="#FFFFFF">
+    <circle cx="70"  cy="90"  r="4"   opacity=".9"/>
+    <circle cx="430" cy="120" r="3"   opacity=".8"/>
+    <circle cx="400" cy="400" r="4.5" opacity=".85"/>
+    <circle cx="95"  cy="380" r="3"   opacity=".7"/>
+    <circle cx="256" cy="45"  r="2.5" opacity=".6"/>
+    <circle cx="465" cy="256" r="2.5" opacity=".6"/>
+  </g>
+
+  <!-- orbit ring -->
+  <ellipse cx="256" cy="256" rx="238" ry="78" fill="none" stroke="url(#ring)"
+           stroke-width="9" opacity=".75" transform="rotate(-22 256 256)"/>
+
+  <!-- the planet / face -->
+  <g filter="url(#glow)">
+    <circle cx="256" cy="256" r="150" fill="url(#face)"/>
+    <!-- craters for texture -->
+    <circle cx="185" cy="180" r="24" fill="#ffffff" opacity=".14"/>
+    <circle cx="330" cy="315" r="34" fill="#000000" opacity=".13"/>
+    <circle cx="315" cy="165" r="15" fill="#ffffff" opacity=".16"/>
+  </g>
+
+  <!-- eyes (happy, upturned) -->
+  <path d="M170 232 q26 -34 52 0" fill="none" stroke="#06121F" stroke-width="20"
+        stroke-linecap="round"/>
+  <path d="M290 232 q26 -34 52 0" fill="none" stroke="#06121F" stroke-width="20"
+        stroke-linecap="round"/>
+
+  <!-- big friendly smile -->
+  <path d="M162 292 q94 108 188 0" fill="none" stroke="#06121F" stroke-width="26"
+        stroke-linecap="round"/>
+
+  <!-- cheek blush -->
+  <ellipse cx="152" cy="300" rx="26" ry="16" fill="#FF7AD9" opacity=".45"/>
+  <ellipse cx="360" cy="300" rx="26" ry="16" fill="#FF7AD9" opacity=".45"/>
+
+  <!-- tiny sparkle -->
+  <path d="M392 74 l9 24 24 9 -24 9 -9 24 -9 -24 -24 -9 24 -9 z" fill="#FFE86B"/>
+</svg>

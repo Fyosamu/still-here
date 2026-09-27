@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Still Here — 150 reads that put your life in perspective</title>
+<meta name="description" content="150 short reads that put your life in perspective — from the real math of a $30,000 apartment, to the one cell that started you, to the tapeworm you should be grateful you're not." />
+<meta name="theme-color" content="#04050c" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="logo.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- AdSense loader is injected by app.js ONLY when provider === "adsense" -->
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- starfield -->
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="brand">
+    <img src="logo.svg" alt="Still Here logo" class="brand-logo" />
+    <div class="brand-text">
+      <h1>STILL HERE</h1>
+      <span>150 reads &middot; no cost &middot; ever</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button id="btnTop" class="ghost-btn" type="button">↑ Top</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <h2>You're one of<br /><span class="grad">the rarest things</span><br />in the universe.</h2>
+  <p>And you're annoyed about a notification. Pick a category below — it's short, it's blunt, and it'll rearrange something.</p>
+  <div class="hero-stats">
+    <div><b>150</b><i>cards</i></div>
+    <div><b>6</b><i>categories</i></div>
+    <div><b>~40s</b><i>per read</i></div>
+  </div>
+</section>
+
+<!-- ============ AD SLOT (in-feed) — filled by app.js ============ -->
+<div class="ad-slot ad-slot--feed" id="feedAd">
+  <span class="ad-label">Advertisement</span>
+</div>
+
+<!-- ============ SUPPORT / TRUST WALLET ============ -->
+<section class="support" id="support"></section>
+
+<!-- ============ CATEGORIES (stacked, 2 columns) ============ -->
+<main class="grid-wrap" id="grid"></main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <img src="logo.svg" alt="" class="foot-logo" />
+  <p>Still Here &mdash; an independent project. Not affiliated with anyone.</p>
+  <nav class="foot-links">
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="muted">Made for people who got a seat. Don't waste it.</p>
+</footer>
+
+<!-- ============ READER MODAL ============ -->
+<div class="modal" id="reader" hidden>
+  <div class="modal-inner">
+    <button class="modal-close" id="readerClose" aria-label="Close">✕</button>
+    <div class="modal-cat" id="readerCat"></div>
+    <h3 id="readerTitle"></h3>
+    <p id="readerBody"></p>
+    <div class="modal-nav">
+      <button id="prevCard" type="button">← Previous</button>
+      <span id="counter"></span>
+      <button id="nextCard" type="button">Next →</button>
+    </div>
+    <!-- banner ad inside reader (injected by app.js ONLY when opened) -->
+    <div class="ad-slot ad-slot--banner" id="readerAd">
+      <span class="ad-label">Advertisement</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SUPPORT MODAL (wallet + QR) ============ -->
+<div class="modal" id="supportModal" hidden>
+  <div class="modal-inner support-pop">
+    <button class="modal-close" id="supportClose" aria-label="Close">✕</button>
+    <div class="modal-cat">☕  Support</div>
+    <h3>Buy me a coffee</h3>
+    <p>This site has no paywall and never will. If a card hit you, send a little
+       something straight to my wallet — it keeps the lights on.</p>
+    <img id="qr" class="qr" alt="Wallet QR code" width="220" height="220" />
+    <div class="net-badge" id="netBadge"></div>
+    <code id="walletAddr" class="wallet"></code>
+    <div class="modal-nav">
+      <button id="copyWallet" type="button">Copy address</button>
+      <span id="counter">USDT · Trust Wallet</span>
+      <a id="openWallet" class="ghost-btn" href="#" target="_blank" rel="noopener">Open wallet</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ENTRY / INTERSTITIAL ============ -->
+<div class="splash" id="splash" hidden>
+  <div class="splash-inner">
+    <div class="splash-head">
+      <img src="logo.svg" alt="" />
+      <b>STILL HERE</b>
+    </div>
+    <span class="ad-label">Advertisement</span>
+    <!-- ad injected by app.js ONLY when the splash is actually shown -->
+    <div class="splash-ad"></div>
+    <button id="splashContinue" type="button" disabled>Continue in 5…</button>
+    <small class="splash-hint">Free forever. The ad is what keeps it that way.</small>
+  </div>
+</div>
+
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

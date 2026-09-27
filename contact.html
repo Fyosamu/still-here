@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — Still Here</title>
+<meta name="description" content="Get in touch about Still Here." />
+<meta name="theme-color" content="#04050c" />
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="index.html"><img src="logo.svg" alt="Still Here" class="brand-logo" /></a>
+    <div class="brand-text"><h1>STILL HERE</h1><span>contact</span></div>
+  </div>
+  <a class="ghost-btn" href="index.html" style="text-decoration:none">← Back</a>
+</header>
+
+<article class="page">
+  <h2>Contact</h2>
+  <p class="lede">One person reads everything that comes in.</p>
+
+  <!-- 👉 CONTACT — akhob59@gmail.com -->
+  <h4>Email</h4>
+  <p><a href="mailto:akhob59@gmail.com" id="mail">akhob59@gmail.com</a></p>
+
+  <h4>What to write about</h4>
+  <p>Spotted a mistake in one of the 150 pieces? Want to suggest a category?
+  Found a broken link or an ad that's in the wrong place? All of that is welcome.</p>
+
+  <h4>Advertising & partnerships</h4>
+  <p>Direct advertising and partnership enquiries are handled by email too. Please
+  include the word <b>"partnership"</b> in the subject line so it gets picked up.</p>
+
+  <h4>Response time</h4>
+  <p>This is run by one person alongside a day job, so replies usually take
+  2&ndash;5 days. If it's urgent, say so in the first line.</p>
+
+  <h4>Legal & privacy requests</h4>
+  <p>Requests relating to your personal data are handled under the
+  <a href="privacy.html">Privacy Policy</a> and will be answered within 30 days.</p>
+
+  <p style="margin-top:34px"><a class="back" href="index.html">← Back to the collection</a></p>
+</article>
+
+<footer class="foot">
+  <img src="logo.svg" alt="" class="foot-logo" />
+  <nav class="foot-links">
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="muted">Made for people who got a seat. Don't waste it.</p>
+</footer>
+
+<script>
+  const c = document.getElementById('stars'), x = c.getContext('2d');
+  let w, h, p = [];
+  const build = () => {
+    w = c.width = innerWidth; h = c.height = innerHeight;
+    p = Array.from({length: Math.round(w*h/5200)}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      r: Math.random()*1.4+.2, s: Math.random()*.22+.04, a: Math.random()*.7+.25}));
+  };
+  const draw = () => {
+    x.clearRect(0,0,w,h);
+    for (const s of p) {
+      s.y += s.s; if (s.y > h) { s.y = -2; s.x = Math.random()*w; }
+      x.globalAlpha = s.a; x.fillStyle = '#fff';
+      x.beginPath(); x.arc(s.x, s.y, s.r, 0, 6.284); x.fill();
+    }
+    requestAnimationFrame(draw);
+  };
+  build(); addEventListener('resize', build); draw();
+</script>
+</body>
+</html>

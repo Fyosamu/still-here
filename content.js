@@ -1,0 +1,216 @@
+/* ============================================================
+   STILL HERE — content
+   150 cards / 6 categories
+   ============================================================ */
+
+const CATEGORIES = [
+  /* ---------------------------------------------------- 1 */
+  {
+    id: "numbers",
+    icon: "\u{1F4CA}",
+    title: "THE NUMBERS",
+    subtitle: "Not a complaint. Just arithmetic.",
+    items: [
+      { t: "$30,000", b: "That's the number. A plain apartment \u2014 not luxury, not a view of anything, just four walls you're allowed to lock \u2014 costs about thirty thousand dollars." },
+      { t: "$120", b: "That's what a shop clerk takes home in a month. It's also roughly what a guy selling socks in the bazaar clears. Same number, same stomach-drop on the 1st." },
+      { t: "250 months", b: "Divide them. Save every single dollar and eat nothing, and you'd own that apartment in 250 months. That's twenty years of not spending on anything, ever." },
+      { t: "But you do eat", b: "Which is the part everyone forgets when they do this math on paper with a nice round number and a smile." },
+      { t: "Half is already gone", b: "Take away food, bus fare, and the phone bill, and you're maybe setting aside $50 a month. Now it's 600 months. Fifty years." },
+      { t: "Fifty years", b: "Start at twenty, finish at seventy. You'd be signing for your front door the year your back gives out." },
+      { t: "That's not a savings plan", b: "That's a life sentence with a balcony." },
+      { t: "\"Just work harder\"", b: "Sure. Except there's a ceiling on how many hours a body can be awake, and the math doesn't care how motivated you are about it." },
+      { t: "The bazaar guy isn't lazy", b: "He opens at seven, closes at nine, six days a week. He's not behind because he slacked. He's behind because the numbers were never on his side." },
+      { t: "One hour of his life", b: "$120 across roughly 200 working hours comes out to about sixty cents an hour. Read that again and then tell someone to hustle." },
+      { t: "A meal costs four hours", b: "Call it three dollars for something basic on the street. At that wage, dinner is four hours of your life traded for dinner." },
+      { t: "The teacher's month", b: "Often less than $120. A person trusted with other people's kids, doing it for less than a phone bill in most countries." },
+      { t: "Rent eats the rest", b: "Not everyone even gets to start saving. Rent in a decent city quietly consumes the fifty dollars you were going to keep." },
+      { t: "The car costs more than the apartment", b: "Read that a second time. In a country that manufactures little you'd want, a basic car can out-price a home." },
+      { t: "Inflation isn't a shock, it's weather", b: "Prices don't jump once. They creep. You don't wake up to a disaster, you wake up to a slow drip you already got used to." },
+      { t: "Nobody plans to be poor here", b: "They plan. They budget. They skip the fruit. And the plan still breaks, every single month, in the same place." },
+      { t: "The word is \"squeezed\"", b: "Not crashed. Not collapsed. Squeezed \u2014 slowly, politely, with a smile and a receipt." },
+      { t: "Two different realities", b: "The number in your account says fine. The number at the store says otherwise. Only one of those is yours to spend." },
+      { t: "\"Just move abroad\"", b: "It costs money to leave. The cheapest flight out is more than a full month of the income we're talking about." },
+      { t: "The ones who left worked three jobs", b: "Not because they're smarter. Because they ran the exact same hustle inside an economy that actually pays for it." },
+      { t: "A haircut is a decision now", b: "Not a big one. Just a decision with a number attached, and you make it with your teeth clenched a little." },
+      { t: "Nobody posts this part", b: "Instagram shows the trip up north. It doesn't show the forty-seven days of instant noodles that paid for it." },
+      { t: "The cruelest bit: everyone knows", b: "There's no illusion left. You're not misinformed, you're just stuck. That's a completely different kind of hard." },
+      { t: "This is not a complaint, it's division", b: "Two numbers were handed over: thirty thousand, and one-twenty. Everything above is just what happens when you divide one by the other." },
+      { t: "You're reading this from somewhere else", b: "Which means for once, you're standing outside this particular math. That's not luck you should sit on. Don't waste the position." }
+    ]
+  },
+
+  /* ---------------------------------------------------- 2 */
+  {
+    id: "biology",
+    icon: "\u{1F9EC}",
+    title: "THE BIOLOGY OF YOU",
+    subtitle: "Where your opinions actually come from.",
+    items: [
+      { t: "You started as one cell", b: "Not a person. Not a plan. One cell \u2014 no opinions, no name, no idea what was coming." },
+      { t: "Then it split", b: "Two. And the entire game changed, because two cells have to coordinate, and coordination needs instructions." },
+      { t: "The instructions are a gene", b: "Not a personality. Not a destiny. A molecule with exactly two priorities: keep me, copy me." },
+      { t: "Keep me. Copy me.", b: "That's the whole brief. Every human ambition you've ever watched is downstream of something that just wants a backup copy." },
+      { t: "You're the strategy, not the strategist", b: "You didn't decide to want things. Wanting arrived already attached to you, already running, no setup required." },
+      { t: "Why you don't feel like a colony", b: "Because the coordination is invisible. Thirty-seven trillion cells agreeing on \"I'm hungry\" feels exactly like one thought." },
+      { t: "You are literally a truce", b: "Your body is a ceasefire between cells that all want slightly different things. It works. Most days." },
+      { t: "\"Alone\" is a feeling, not a fact", b: "Nothing in you is solitary. Even your gut is a city of other organisms with their own agenda." },
+      { t: "The biology version of not alone", b: "Every cell in you is running the same deal, struck 3.8 billion years ago. You're a very loud branch of one very old argument." },
+      { t: "Replication isn't romantic", b: "It isn't about legacy or meaning. It's a pattern that made more of itself \u2014 and the patterns that didn't, aren't here to be sad about it." },
+      { t: "Survivorship, that's all", b: "You're not the best design. You're the design that happened to still be running when everyone else's version stopped." },
+      { t: "So why does it feel like meaning?", b: "Because a pattern that doesn't protect itself stops existing. Meaning is the alarm bell, not the reason for the alarm." },
+      { t: "Anger is a price tag", b: "When you rage at being cut off in traffic, that's your brain slapping a value on something and screaming THIS MATTERS. You didn't set that value. It came pre-installed." },
+      { t: "Jealousy is a spreadsheet entry", b: "Your code logged \"resources held by others = threat to my copy.\" You just get to feel it as a knot somewhere under your ribs." },
+      { t: "Fear is maintenance", b: "The thing keeping you alive never asked your permission and has no interest in whether you find it exhausting." },
+      { t: "You never chose your first preference", b: "You showed up already preferring sugar over dirt, warm over cold, safe over unsafe. All of it arrived with the package." },
+      { t: "Even your opinions have a boss", b: "The things you're certain about feel like yours. Trace them back far enough and you'll hit machinery you never built." },
+      { t: "This doesn't make you a robot", b: "Knowing the wiring doesn't switch it off. You still get to look at the alarm and decide what to do next." },
+      { t: "That's actually the upgrade", b: "A cell can't overrule its drives. You can notice one, name it, and pick anyway. Nothing before you could do that." },
+      { t: "The line nobody drew", b: "Somewhere between one cell and a person who reads, the pattern learned to argue with itself. That's us. That's the strange part." },
+      { t: "What you are now is the receipt", b: "Every ancestor who survived a winter, a drought, one bad decision \u2014 you're the final line item on a very long invoice." },
+      { t: "A running total", b: "Not a miracle. Just an unbroken chain of good enough, again, again, again, with no days off." },
+      { t: "The chain doesn't care about your bad day", b: "It handed you a nervous system and moved on. What you build with it is genuinely, uncomfortably, up to you." },
+      { t: "Blame the gene, then get up", b: "Knowing emotions are installed doesn't make them fake. It makes them editable. That's a better deal than most people get." },
+      { t: "3.8 billion years landed on you opening this card", b: "Statistically absurd. Might as well do something loud with it." }
+    ]
+  },
+
+  /* ---------------------------------------------------- 3 */
+  {
+    id: "seat",
+    icon: "\u2728",
+    title: "YOU GOT A SEAT",
+    subtitle: "The rarest thing in the cosmos, and you're holding it.",
+    items: [
+      { t: "Infinite people never got here", b: "Every line that ended, every person who never reproduced, every road that just stopped. You're the exception, not the rule." },
+      { t: "And infinite more won't", b: "People who'll never be born because of a choice made in the next five minutes. You're not late. You're not early. You're exactly here." },
+      { t: "The seat was almost not yours", b: "One different decision by one ancestor and you're a different person, or no person at all." },
+      { t: "You're alive right now", b: "Not in a postcard way. Actually. While you read this, you're one of the tiny fraction of everything that can notice anything." },
+      { t: "The universe is 13.8 billion years old", b: "It waited that long to build something that could look back at it. That something is currently you, on a screen, slightly bored." },
+      { t: "You can taste things", b: "A structure made of stardust figured out how to detect sugar. Nothing else up there has that feature." },
+      { t: "You can get bored", b: "Complaining about boredom is a luxury problem. Rocks don't get bored. Neither does 99.9999% of everything that exists." },
+      { t: "You can miss people", b: "Missing requires memory, which requires a brain that bothered to store something. Amazing machine, terrible billing department." },
+      { t: "Someone laughed at something you said once", b: "You probably don't remember it. They might. That's a real event in a real universe, caused directly by you." },
+      { t: "The weather is free", b: "Not money-free. Just: nobody charged you for the color of that sunset, and it still happened anyway." },
+      { t: "You have a tomorrow", b: "Not guaranteed, but scheduled. Most things that ever existed had no schedule at all, not even a rough one." },
+      { t: "You can change your mind", b: "Genuinely. A single cell can't. A rock can't. You can read one card and walk away different than you arrived." },
+      { t: "Someone from 500 years ago would call you a god", b: "Running water, a light you switch on with your finger, food from three continents. You've been bored of miracles for years." },
+      { t: "You're bored of miracles", b: "Let that land properly. You got handed the impossible and filed it under \"Tuesday, nothing special.\"" },
+      { t: "You can choose what to think about next", b: "That wasn't always on. For most of history, most people got one job and one set of rules and no say in the matter." },
+      { t: "You're not starving while reading this", b: "If you are \u2014 eat first, come back. If you're not, that's one problem already solved today. Check." },
+      { t: "You have access to every book ever written", b: "In your pocket, for free. And we mostly use it to watch a stranger fall off a chair." },
+      { t: "That's still your right", b: "Nobody has to earn the right to waste an afternoon. Sometimes wasting the afternoon is the entire point of the afternoon." },
+      { t: "You can be kind on purpose", b: "Instinct gets you some of it. Doing it when it's inconvenient \u2014 that's the part no gene ever asked for." },
+      { t: "You can forgive a gene", b: "Yours is running on very old code with a very short memory. Knowing that makes you the adult in the room." },
+      { t: "The people after you aren't born yet", b: "Someone in 2140 will exist because of something you do or don't do. You're not a passenger. You're the hinge." },
+      { t: "Someone before you gave up something for you", b: "A name you'll never know stayed alive long enough for your line to continue. They get no credit. You are the credit." },
+      { t: "It cost 13.8 billion years to get you here", b: "That's the bill on the table. Try not to undersell the product." },
+      { t: "Nobody's handing out medals for existing", b: "Which is strange, because existing was genuinely the hard part. Everything after that is negotiable." },
+      { t: "So what are you doing with it?", b: "Not a demand. Just a real question. You've got the rarest thing in the cosmos and it's on a timer." }
+    ]
+  },
+
+  /* ---------------------------------------------------- 4 */
+  {
+    id: "tapeworm",
+    icon: "\u{1F9A7}",
+    title: "GLAD YOU'RE NOT THIS",
+    subtitle: "One specific animal. No human wants its job.",
+    items: [
+      { t: "The tapeworm", b: "No mouth. No stomach. No eyes. No brain. It lives in the dark inside another creature and absorbs whatever it's given. It's been doing this for 500 million years." },
+      { t: "That's the bar", b: "Half a billion years of what we'd call \"success,\" and it has never once gotten to see anything at all." },
+      { t: "It has no idea it exists", b: "And honestly, neither do you most days. The difference is that you get to notice that, which is somehow worse and way better." },
+      { t: "Nobody wrote a poem about a tapeworm", b: "And it wouldn't matter if they did. There's no one in there to read it." },
+      { t: "Its whole life is someone else's lunch", b: "It never picked a meal, a room, a name. It just arrived inside a system and did the only thing it knows how to do." },
+      { t: "Survival with zero enjoyment", b: "You say life is hard. A tapeworm couldn't understand the complaint, or the concept of \"better,\" or the word \"worse.\"" },
+      { t: "And it's still winning", b: "It outlived the dinosaurs. It'll probably outlive us. Which should tell you that winning was never the point." },
+      { t: "Now the parasitic wasp", b: "It stings a caterpillar, paralyzes it, lays eggs inside, and the eggs hatch and eat the host from the inside out. Alive. In order." },
+      { t: "That's a Tuesday for it", b: "No villain. No plan. Just a program running with the brightness turned all the way off." },
+      { t: "The botfly larva", b: "Burrows into skin, eats its way around, comes out when it's finished. You'd be screaming the entire time. It wouldn't be." },
+      { t: "The male anglerfish", b: "He bites the female, fuses to her, dissolves, and becomes nothing but a pair of gonads. That's the entire career path." },
+      { t: "Koala fingerprints", b: "Under a microscope they're indistinguishable from a human's. Evolution ran out of ideas and copied ours. Nobody asked permission." },
+      { t: "Your cat would eat you if you stopped moving", b: "Not out of malice. Its \"care\" setting simply doesn't cover you. You are not in the config file." },
+      { t: "The point isn't \"it's worse out there\"", b: "The point is: you got the version with eyes, jokes, cold drinks, and the ability to be annoyed by all three." },
+      { t: "You can be sad. They can't even get that far.", b: "Sadness requires a self to be sad about. Most living things never make it as far as having a self." },
+      { t: "Being miserable is an upgrade", b: "Read that again with a straight face. It means you have something to lose, which is not a small thing." },
+      { t: "A rock isn't depressed", b: "It also isn't anything. The minimum entry fee for being anything at all is that you sometimes feel bad about it." },
+      { t: "The tapeworm can't have a bad day", b: "It also can't have a good one. That's the trade it made by not bothering with a brain." },
+      { t: "You get both", b: "Good day, bad day, weird day, day you refuse to describe to anyone. Both columns come with the same membership." },
+      { t: "Nobody has ever envied a jellyfish", b: "No brain, no heart, no blood. It drifts. It's extremely good at drifting. Still not what anyone's aiming for." },
+      { t: "Consider the sponge", b: "It doesn't eat, think, move, or notice anything. It's been at this for 600 million years. Not one person is jealous." },
+      { t: "Glad you're not that?", b: "Then you already answered what you'd rather be instead. Hold onto that answer, it's more useful than it looks." },
+      { t: "Every alternative on the table is worse", b: "That's not a reason to be smug. It's a reason to stop renegotiating with your own life." },
+      { t: "You drew the only hand that can complain about the hand", b: "Which is either the universe's best joke or its entire point, and nobody's confirming which." },
+      { t: "So no, you don't want to be a tapeworm", b: "Good. Now go act like somebody who knows exactly what they dodged." }
+    ]
+  },
+
+  /* ---------------------------------------------------- 5 */
+  {
+    id: "nowgo",
+    icon: "\u{1F680}",
+    title: "NOW GO",
+    subtitle: "The part where you do something.",
+    items: [
+      { t: "The gene doesn't care how you feel", b: "Good news. Neither should you, about the excuses you've been rehearsing." },
+      { t: "Motivation is a guest, not a tenant", b: "It'll visit sometimes. Don't hand it the lease. Do the work while it's out of the house." },
+      { t: "Start embarrassingly small", b: "Two minutes. One sentence. One push-up. The bar has to be low enough that arguing with it looks stupid." },
+      { t: "Nobody's coming", b: "Not a mentor, not a moment, not a sign from the universe. The only sign you're getting is the one you build yourself." },
+      { t: "The discomfort is the whole product", b: "Everything you want is sitting on the other side of something you don't want to do. Every time." },
+      { t: "You're allowed to be bad at it", b: "For a while. Being bad at something is just the entry fee, and everybody pays it in full, upfront." },
+      { t: "Discipline beats feelings", b: "Feelings change four times before lunch. Discipline is just feelings that agreed to show up anyway." },
+      { t: "Your ancestors survived worse with less", b: "A famine, a war, a winter with no heater. Your excuse is a push notification." },
+      { t: "Comparison is a rigged game", b: "You're putting your chapter two next to their chapter twenty, using their highlight reel as the ruler." },
+      { t: "Stop negotiating with 6 a.m.", b: "Decide the night before. The morning version of you is not to be trusted with anything important." },
+      { t: "Boredom is a superpower", b: "Can't sit still anymore? Nobody can. The one person who still can is going to take all of it." },
+      { t: "Do the boring thing unimpressively", b: "Not perfectly, not with a color-coded planner. Just done, badly, again tomorrow. That's the whole method." },
+      { t: "You don't need a breakthrough", b: "You need four hundred unremarkable days in a row and the willingness to not be excited about most of them." },
+      { t: "The work is the reward", b: "Not eventually, actually. The day you stop dreading it is the exact day it starts paying you back." },
+      { t: "You're behind on a clock you invented", b: "There's no schedule. There's no deadline. There's just people who started and people who are still thinking about it." },
+      { t: "Nobody's keeping score", b: "Which is both freeing and terrifying. Nobody will notice if you quit. That's exactly why you shouldn't." },
+      { t: "Quitting is quiet", b: "Success makes noise. Failure just closes a tab one afternoon and nobody ever asks what happened there." },
+      { t: "Make it stupidly easy to start", b: "Shoes by the door. Document already open. Remove the friction and you remove most of the argument." },
+      { t: "Track it or it didn't happen", b: "One line a day. You'll hate the empty days far more than you hate the actual work." },
+      { t: "Rest is part of the plan", b: "Not a betrayal of the plan. A machine that never stops isn't dedicated \u2014 it's just broken and hasn't told anyone." },
+      { t: "Your mood is weather", b: "It passes whether you argue with it or not. Work through it and it becomes just a Tuesday that happened to rain." },
+      { t: "Feel it and do it anyway", b: "That's not suppression, that's adulthood. The fear stays exactly where it is. You move regardless." },
+      { t: "Five years from now is coming either way", b: "You'll arrive at it no matter what you do. Might as well have something to show for the trip." },
+      { t: "The you of next year is watching", b: "Not mystically. Just practically \u2014 they're either going to be grateful or annoyed, and you're the only one who picks which." },
+      { t: "You're the only person who can", b: "Not the most talented, not the most connected. Just the only one with your exact access to right now." }
+    ]
+  },
+
+  /* ---------------------------------------------------- 6 */
+  {
+    id: "loose",
+    icon: "\u{1F4A1}",
+    title: "LOOSE THOUGHTS",
+    subtitle: "Things that don't fit anywhere else.",
+    items: [
+      { t: "Everyone's improvising", b: "Nobody has it figured out. Some people are just better at performing that they do, and it's mostly just performance." },
+      { t: "\"Normal\" is the average of everyone's worst days", b: "You're comparing your behind-the-scenes to a number that nobody ever agreed to in the first place." },
+      { t: "Time is the only thing you can't earn back", b: "You'll trade money for it every single time you're sick. Might be worth acting like you believe that." },
+      { t: "You've already survived your worst day", b: "Statistically, your record is 100%. Perfect. Nobody's beaten it yet." },
+      { t: "Most of what you're worried about won't happen", b: "The rest you'll handle, because you always have, with zero notice and no preparation whatsoever." },
+      { t: "You are not your best idea", b: "Or your worst one. You're the one standing there deciding which one gets built." },
+      { t: "Nobody thinks about you as much as you do", b: "Slightly freeing. Slightly insulting. Both are true at the same time and that's fine." },
+      { t: "The thing you're avoiding takes four minutes", b: "It's been four hours of avoiding it. That ratio is the entire problem, in one line." },
+      { t: "\"Someday\" is not a date", b: "It's a rejection letter you wrote to yourself and never sent, so it doesn't even feel like one." },
+      { t: "You can start over", b: "Not from zero \u2014 you keep the skills and the scars \u2014 but you can absolutely start again." },
+      { t: "Kindness is free and rarely on sale", b: "Because nobody's marketing it. There's no campaign. Do it anyway, it's the cheapest thing that moves people." },
+      { t: "The people who annoy you most are running old code too", b: "Same as you, slightly different install date, fewer updates applied." },
+      { t: "You'll forget 90% of this week", b: "Which is either horrifying or an extremely generous feature, depending on the week you're having." },
+      { t: "A bad ten minutes isn't a bad life", b: "It's ten minutes. Your brain just turns the volume all the way up and calls it permanent." },
+      { t: "Money is a tool with terrible marketing", b: "Everyone thinks it's the destination. It's a hammer. Stop trying to eat the hammer." },
+      { t: "You don't need more time, you need fewer tabs", b: "In your browser and in your head, and honestly mostly in your head." },
+      { t: "The fastest way to feel better is to move", b: "Walk. Not a metaphor. Actually walk, ten minutes, outside. The chemistry does the rest of the job for you." },
+      { t: "Nobody claps for the things you didn't do", b: "Including you. Go do exactly one of them and see how the day changes." },
+      { t: "Your taste is better than your skills", b: "Good. That gap is where all of the interesting work lives, and it's the only sign you need that you're progressing." },
+      { t: "Boring people are made, not born", b: "They just stopped asking questions somewhere around thirty. Don't stop asking questions." },
+      { t: "You're allowed to outgrow people", b: "Not with drama, not with a speech. Just quietly, while walking in a slightly different direction." },
+      { t: "The phone will still be there", b: "It's been ninety minutes of scrolling and you'd genuinely struggle to name three things you saw in it." },
+      { t: "Say the thing", b: "To them, to yourself, out loud. Half of life is unspoken and all of it is heavy to carry around alone." },
+      { t: "One day this will be a memory with a weird smell", b: "And you'll wish you'd been a lot less tense about it while it was actually happening." },
+      { t: "You're doing better than the tapeworm", b: "Which, if you think about it for two seconds, was the bar all along." }
+    ]
+  }
+];

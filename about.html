@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Still Here</title>
+<meta name="description" content="What Still Here is, who makes it, and why it exists." />
+<meta name="theme-color" content="#04050c" />
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="index.html"><img src="logo.svg" alt="Still Here" class="brand-logo" /></a>
+    <div class="brand-text"><h1>STILL HERE</h1><span>about</span></div>
+  </div>
+  <a class="ghost-btn" href="index.html" style="text-decoration:none">← Back</a>
+</header>
+
+<article class="page">
+  <h2>About</h2>
+  <p class="lede">150 short reads · 6 categories · one uncomfortable idea</p>
+
+  <p><b>Still Here</b> is an independent reading project. It's a collection of 150 short,
+  blunt pieces — each one about 40 seconds long — written to put ordinary complaints
+  into perspective.</p>
+
+  <h4>What's in it</h4>
+  <p>The collection runs across six categories: a plain look at what certain salary and
+  housing numbers actually add up to over a lifetime; a plain look at the biology behind
+  why we feel things so intensely; a reminder that being conscious at all is statistically
+  absurd; a look at one specific animal you should be relieved not to be; a set of
+  motivational pieces; and a handful of loose thoughts that didn't fit anywhere else.</p>
+
+  <h4>Who makes it</h4>
+  <p>It's written and maintained by one person. There's no company behind it, no funding,
+  and no political affiliation. Nothing on this site is financial, medical, or psychological
+  advice — it's opinion and arithmetic, presented as such.</p>
+
+  <h4>Why it exists</h4>
+  <p>Because the interesting question isn't whether life is hard. It is, for almost
+  everyone. The interesting question is what you do with the fact that you're here at all,
+  which is a temporary condition nobody asked for and nobody gets to keep.</p>
+
+  <h4>How it's paid for</h4>
+  <p>The site is free and has no paywall. It's supported by advertising and by voluntary
+  donations. Advertising helps cover hosting and the time it takes to write and maintain
+  the collection.</p>
+
+  <h4>Content & copyright</h4>
+  <p>All 150 pieces are original writing. The logo and artwork are original SVG
+  illustrations created for this project. Nothing here reproduces third-party journalism,
+  photography, or licensed material.</p>
+
+  <h4>Not affiliated</h4>
+  <p>Still Here is not affiliated with, endorsed by, or sponsored by any company,
+  platform, or organisation mentioned in its content.</p>
+
+  <p style="margin-top:34px"><a class="back" href="index.html">← Back to the collection</a></p>
+</article>
+
+<footer class="foot">
+  <img src="logo.svg" alt="" class="foot-logo" />
+  <nav class="foot-links">
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="muted">Made for people who got a seat. Don't waste it.</p>
+</footer>
+
+<script>
+  const c = document.getElementById('stars'), x = c.getContext('2d');
+  let w, h, p = [];
+  const build = () => {
+    w = c.width = innerWidth; h = c.height = innerHeight;
+    p = Array.from({length: Math.round(w*h/5200)}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      r: Math.random()*1.4+.2, s: Math.random()*.22+.04, a: Math.random()*.7+.25}));
+  };
+  const draw = () => {
+    x.clearRect(0,0,w,h);
+    for (const s of p) {
+      s.y += s.s; if (s.y > h) { s.y = -2; s.x = Math.random()*w; }
+      x.globalAlpha = s.a; x.fillStyle = '#fff';
+      x.beginPath(); x.arc(s.x, s.y, s.r, 0, 6.284); x.fill();
+    }
+    requestAnimationFrame(draw);
+  };
+  build(); addEventListener('resize', build); draw();
+</script>
+</body>
+</html>

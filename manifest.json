@@ -1,0 +1,10 @@
+{
+  "name": "Still Here",
+  "short_name": "Still Here",
+  "description": "150 short reads that put your life in perspective.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#04050c",
+  "theme_color": "#04050c",
+  "icons": [{ "src": "logo.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
