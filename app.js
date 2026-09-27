@@ -262,7 +262,77 @@ function showOverlay(target) {
 }
 
 /* ============================================================
-   4. READER
+   4. CORNER AD — small floating card, re-fills while you read
+
+   What you asked for: something in the corner that quietly comes
+   back on its own so each repeat earns, WITHOUT nagging the reader.
+
+   Rules that keep it honest:
+   • appears ONLY while an article is open — never on entry
+   • re-fills at most once a minute, and only when it is actually
+     on screen and the tab is visible (no off-camera impressions)
+   • one tap on ✕ hides it for the rest of the visit
+   • torn down the moment the reader closes
+============================================================ */
+const CORNER_REFRESH_MS = 60000;   /* >= 60s — the safe, viewable cadence */
+const CORNER_SHOW_DELAY = 900;     /* let the in-article ad grab its slot first */
+
+let cornerTimer   = null;
+let cornerDelay   = null;
+let cornerInView  = false;
+let cornerMounted = false;
+
+const cornerOff = () => sessionStorage.getItem("cornerAdOff") === "1";
+
+function showCorner() {
+  if (cornerOff() || $("#reader").hidden) return;
+  mountAd($("#cornerAdBox"), "reader", 300, 250);   // same approved 300×250 unit
+  $("#cornerAd").hidden = false;
+  $("#reader").classList.add("corner-on");
+  cornerMounted = true;
+}
+
+function hideCorner() {
+  $("#cornerAd").hidden = true;
+  $("#reader").classList.remove("corner-on");
+  clearAd($("#cornerAdBox"));        // tear down — no leftover frame
+  cornerMounted = false;
+}
+
+function stopCorner() {
+  clearTimeout(cornerDelay);  cornerDelay = null;
+  clearInterval(cornerTimer); cornerTimer = null;
+  hideCorner();
+}
+
+/* called once per minute: only ask for a new ad if the card is really
+   being looked at. Idle tab, scrolled away, reader closed → no request. */
+function refreshCorner() {
+  if (cornerOff() || $("#reader").hidden) return stopCorner();
+  if (!cornerMounted) return showCorner();
+  if (document.visibilityState !== "visible" || !cornerInView) return;
+  showCorner();
+}
+
+function startCorner() {
+  if (cornerOff() || cornerTimer || !adReady()) return;   // already running
+  cornerDelay = setTimeout(() => {
+    cornerDelay = null;
+    if ($("#reader").hidden) return;
+    showCorner();
+    cornerTimer = setInterval(refreshCorner, CORNER_REFRESH_MS);
+  }, CORNER_SHOW_DELAY);
+}
+
+function watchCorner() {
+  const el = $("#cornerAd");
+  if (!("IntersectionObserver" in window)) { cornerInView = true; return; }
+  new IntersectionObserver((e) => { cornerInView = e[0].isIntersecting; },
+                           { threshold: 0.2 }).observe(el);
+}
+
+/* ============================================================
+   5. READER
    ============================================================ */
 function openCard(ci, ii) {
   currentCat = ci;
@@ -279,11 +349,14 @@ function openCard(ci, ii) {
 
   mountAd($("#readerAd"), "reader", 300, 250);   // matches unit 31429908, only while open
   $(".modal-inner").scrollTop = 0;
+
+  startCorner();                          // quiet corner card joins in
 }
 
 function closeReader() {
   $("#reader").hidden = true;
   clearAd($("#readerAd"));
+  stopCorner();                           // no ad left running off-screen
   document.body.style.overflow = "";
 }
 
@@ -301,7 +374,7 @@ function move(dir) {
 }
 
 /* ============================================================
-   5. SUPPORT / DONATE → Trust Wallet
+   6. SUPPORT / DONATE → Trust Wallet
    ============================================================ */
 function renderSupport() {
   if (!SUPPORT_CONFIG.enabled) return;
@@ -340,7 +413,7 @@ function renderSupport() {
 }
 
 /* ============================================================
-   6. STARFIELD
+   7. STARFIELD
    ============================================================ */
 function stars() {
   const c = $("#stars"), x = c.getContext("2d");
@@ -369,19 +442,26 @@ function stars() {
 }
 
 /* ============================================================
-   7. BOOT
+   8. BOOT
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
   loadAdsenseScript();
   render();
   stars();
   renderSupport();
+  watchCorner();
 
   $("#readerClose").addEventListener("click", closeReader);
   $("#reader").addEventListener("click", (e) => { if (e.target.id === "reader") closeReader(); });
   $("#prevCard").addEventListener("click", () => move(-1));
   $("#nextCard").addEventListener("click", () => move(1));
   $("#btnTop").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+
+  /* one tap and the corner card is gone for this visit — the reader is never nagged */
+  $("#cornerAdClose").addEventListener("click", () => {
+    sessionStorage.setItem("cornerAdOff", "1");
+    stopCorner();
+  });
 
   document.addEventListener("keydown", (e) => {
     if (!$("#supportModal").hidden) {

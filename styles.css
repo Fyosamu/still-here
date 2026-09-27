@@ -282,6 +282,33 @@ button{font-family:inherit;cursor:pointer}
 .splash-ad{position:relative;min-height:260px}
 .splash-ad:empty::after{content:"Your ad loads here";}
 
+/* ---------- corner ad — small, dismissible, only while reading ----------
+   Anchored to the bottom-right, scaled down so it never covers the text.
+   z-index 90 = above the reader (80), below the interstitial (120). */
+.corner-ad{
+  position:fixed;right:14px;bottom:14px;z-index:90;
+  width:300px;height:250px;
+  transform:scale(.78);transform-origin:bottom right;
+  animation:fade .3s ease;
+}
+.corner-ad[hidden]{display:none}
+.corner-ad-box{
+  position:relative;width:300px;height:250px;overflow:hidden;
+  background:var(--panel);border:1px solid rgba(155,107,255,.35);
+  border-radius:16px;box-shadow:0 22px 55px -22px rgba(0,0,0,.95);
+}
+.corner-ad-x{
+  position:absolute;top:-13px;left:-13px;z-index:2;
+  width:27px;height:27px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#141733;border:1px solid var(--line);color:#fff;
+  font-size:12px;line-height:1;transition:.2s;
+}
+.corner-ad-x:hover{background:rgba(255,122,217,.35);border-color:var(--a3)}
+/* reserve room so the last line of the article can always be scrolled clear
+   of the floating card — nothing gets trapped underneath it */
+#reader.corner-on .modal-inner{padding-bottom:215px}
+
 /* ---------- static pages ---------- */
 .page{max-width:760px;margin:0 auto;padding:clamp(40px,8vw,80px) clamp(16px,4vw,30px);position:relative;z-index:2}
 .page h2{font-size:clamp(26px,5vw,42px);margin-bottom:10px;
@@ -309,4 +336,9 @@ button{font-family:inherit;cursor:pointer}
   .card b{font-size:11.5px;-webkit-line-clamp:3;display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical}
   .card span{font-size:10.5px;-webkit-line-clamp:3}
   .brand-text span{display:none}
+}
+/* keep the floating card comfortably inside small screens */
+@media (max-width:720px){
+  .corner-ad{transform:scale(.56);right:8px;bottom:8px}
+  #reader.corner-on .modal-inner{padding-bottom:165px}
 }

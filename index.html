@@ -88,6 +88,16 @@
   </div>
 </div>
 
+<!-- ============ CORNER AD — small, dismissible, re-fills while reading ============ -->
+<!-- Sits in the corner, never blocks the text, one tap hides it for the session.
+     app.js re-fills it at most once a minute, and only while it is actually on screen. -->
+<aside class="corner-ad" id="cornerAd" hidden aria-label="Sponsored">
+  <button class="corner-ad-x" id="cornerAdClose" type="button" aria-label="Hide this ad">✕</button>
+  <div class="corner-ad-box" id="cornerAdBox">
+    <span class="ad-label">Advertisement</span>
+  </div>
+</aside>
+
 <!-- ============ SUPPORT MODAL (wallet + QR) ============ -->
 <div class="modal" id="supportModal" hidden>
   <div class="modal-inner support-pop">
