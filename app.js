@@ -347,6 +347,9 @@ function openCard(ci, ii) {
   $("#reader").hidden = false;
   document.body.style.overflow = "hidden";
 
+  /* keep the address bar pointing at THIS card, so it can be copied raw too */
+  try { history.replaceState(null, "", cardUrl(ci, ii)); } catch (e) { /* ignore */ }
+
   mountAd($("#readerAd"), "reader", 300, 250);   // matches unit 31429908, only while open
   $(".modal-inner").scrollTop = 0;
 
@@ -371,6 +374,69 @@ function move(dir) {
     n = 0;
   }
   openCard(currentCat, n);   // in-reader nav = same session, no new ad
+}
+
+/* ============================================================
+   5b. SHARING — a card travels better than a homepage
+   ============================================================ */
+function flatIndex(ci, ii) {
+  let n = 0;
+  for (let i = 0; i < ci; i++) n += CATEGORIES[i].items.length;
+  return n + ii;
+}
+
+function fromFlat(n) {
+  for (let ci = 0; ci < CATEGORIES.length; ci++) {
+    const len = CATEGORIES[ci].items.length;
+    if (n < len) return [ci, n];
+    n -= len;
+  }
+  return null;
+}
+
+function cardUrl(ci, ii) {
+  return `${location.origin}${location.pathname}?c=${flatIndex(ci, ii)}`;
+}
+
+/* the line someone actually forwards — the first sentence, not the whole card */
+function hookOf(text) {
+  const stop = text.search(/[.!?]\s/);
+  return stop > -1 ? text.slice(0, stop + 1) : text.slice(0, 140);
+}
+
+/* native sheet → clipboard → telegram. Returns which one happened. */
+async function shareOrCopy(text, url) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "STILL HERE", text, url });
+      return "shared";
+    } catch (e) { return "dismissed"; }
+  }
+
+  const payload = `${text}\n${url}`;
+  try { await navigator.clipboard.writeText(payload); return "copied"; }
+  catch (e) { /* needs a gesture — keep going */ }
+
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = payload;
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    if (ok) return "copied";
+  } catch (e) { /* keep going */ }
+
+  open("https://t.me/share/url?url=" + encodeURIComponent(url) +
+       "&text=" + encodeURIComponent(text), "_blank", "noopener");
+  return "telegram";
+}
+
+function flash(btn, msg) {
+  const was = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(() => { btn.textContent = was; }, 2000);
 }
 
 /* ============================================================
@@ -459,47 +525,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* one tap to spread the link — the cheapest traffic there is */
   $("#btnShare").addEventListener("click", async () => {
-    const url = location.origin + location.pathname;
-    const payload = {
-      title: "STILL HERE",
-      text: "150 reads that put your life in perspective — free, always.",
-      url
-    };
+    const r = await shareOrCopy(
+      "STILL HERE — 150 reads that put your life in perspective, free forever.",
+      location.origin + location.pathname
+    );
+    if (r === "copied") flash($("#btnShare"), "Link copied ✓");
+  });
 
-    /* 1. native share sheet (phones) */
-    if (navigator.share) {
-      try { await navigator.share(payload); return; } catch (e) { /* dismissed */ }
-    }
-
-    /* 2. straight to the clipboard — with a manual fallback for strict browsers */
-    let copied = false;
-    try {
-      await navigator.clipboard.writeText(url);
-      copied = true;
-    } catch (e) {
-      try {
-        const ta = document.createElement("textarea");
-        ta.value = url;
-        ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
-        document.body.appendChild(ta);
-        ta.select();
-        copied = document.execCommand("copy");
-        ta.remove();
-      } catch (e2) { copied = false; }
-    }
-
-    if (copied) {
-      const b = $("#btnShare");
-      const was = b.textContent;
-      b.textContent = "Link copied ✓";
-      setTimeout(() => { b.textContent = was; }, 2000);
-      return;
-    }
-
-    /* 3. last resort: Telegram's share sheet */
-    open("https://t.me/share/url?url=" + encodeURIComponent(url) +
-         "&text=" + encodeURIComponent("STILL HERE — 150 reads that put your life in perspective"),
-         "_blank", "noopener");
+  /* send the card you're reading, straight to the line it opens on */
+  $("#shareCard").addEventListener("click", async () => {
+    const it = CATEGORIES[currentCat].items[currentCard];
+    const r = await shareOrCopy(`${hookOf(it.b)} — STILL HERE`,
+                                cardUrl(currentCat, currentCard));
+    if (r === "copied") flash($("#shareCard"), "Link copied ✓");
   });
 
   /* one tap and the corner card is gone for this visit — the reader is never nagged */
@@ -548,4 +586,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   addEventListener("appinstalled", () => { deferredPrompt = null; installBtn.hidden = true; });
+
+  /* a shared link lands on the exact card it was sent from — same ad rules as any open */
+  const deep = new URLSearchParams(location.search).get("c");
+  if (deep !== null && /^\d+$/.test(deep)) {
+    const pair = fromFlat(parseInt(deep, 10));
+    if (pair) requestOpen(pair[0], pair[1]);
+  }
 });
