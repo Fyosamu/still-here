@@ -59,6 +59,7 @@ button{font-family:inherit;cursor:pointer}
   padding:9px 16px;border-radius:999px;font-size:13px;transition:.2s;
 }
 .ghost-btn:hover{background:var(--panel-2);border-color:var(--a2)}
+.topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 
 /* ---------- hero ---------- */
 .hero{

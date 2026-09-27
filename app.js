@@ -457,6 +457,51 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#nextCard").addEventListener("click", () => move(1));
   $("#btnTop").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
 
+  /* one tap to spread the link — the cheapest traffic there is */
+  $("#btnShare").addEventListener("click", async () => {
+    const url = location.origin + location.pathname;
+    const payload = {
+      title: "STILL HERE",
+      text: "150 reads that put your life in perspective — free, always.",
+      url
+    };
+
+    /* 1. native share sheet (phones) */
+    if (navigator.share) {
+      try { await navigator.share(payload); return; } catch (e) { /* dismissed */ }
+    }
+
+    /* 2. straight to the clipboard — with a manual fallback for strict browsers */
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      copied = true;
+    } catch (e) {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        copied = document.execCommand("copy");
+        ta.remove();
+      } catch (e2) { copied = false; }
+    }
+
+    if (copied) {
+      const b = $("#btnShare");
+      const was = b.textContent;
+      b.textContent = "Link copied ✓";
+      setTimeout(() => { b.textContent = was; }, 2000);
+      return;
+    }
+
+    /* 3. last resort: Telegram's share sheet */
+    open("https://t.me/share/url?url=" + encodeURIComponent(url) +
+         "&text=" + encodeURIComponent("STILL HERE — 150 reads that put your life in perspective"),
+         "_blank", "noopener");
+  });
+
   /* one tap and the corner card is gone for this visit — the reader is never nagged */
   $("#cornerAdClose").addEventListener("click", () => {
     sessionStorage.setItem("cornerAdOff", "1");
