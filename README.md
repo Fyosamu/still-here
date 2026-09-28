@@ -19,6 +19,17 @@
 | `contact.html` | Contact page — **AdSense requires this** |
 | `README.md` | This file |
 
+**Growth kit** (generated — never hand-edit, re-run instead)
+
+| File | What it does |
+|---|---|
+| `c/1.html … c/150.html` | One indexable page per card (`tools/build-pages.mjs`) |
+| `all.html` + `sitemap.xml` | Crawl entry point + 155 URLs |
+| `content.json` | Machine-readable dump of all 150 cards |
+| `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
+| `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
+| `og.png` | Share card for Telegram / X / Facebook |
+
 **Content — 6 × 25 = 150 cards**
 
 | # | Category |
@@ -484,3 +495,57 @@ python make-og.py
 
 **Do this before sharing anywhere** — a bare link gets roughly the click-through of
 a link with a picture.
+
+---
+
+## 13. 🎬 Growth kit — 150 pages, 150 pins, 150 video scripts
+
+Everything below is generated from `content.js`, so **one copy edit + one re-run**
+keeps the app, the SEO pages, the pins and the scripts in sync.
+
+| Command | Writes |
+|---|---|
+| `node tools/build-pages.mjs` | `c/1.html … c/150.html`, `all.html`, `sitemap.xml`, `content.json` |
+| `python tools/make-pins.py` | `pins/001.jpg … pins/150.jpg`, `pins/pins.csv` |
+| `node tools/make-videos.mjs` | `videos.md`, `videos.csv` |
+| `node tools/verify-videos.js` | checks every hook, on-screen line, SRT cue and CSV column |
+| `python make-og.py` | `og.png` (1200×630) |
+
+### 1 · SEO pages
+
+- One static page per card, canonical `https://fyosamu.github.io/still-here/c/<n>.html`,
+  prev/next links so a crawler can walk all 150 without JavaScript.
+- `all.html` links every card and is reachable from the app footer → the whole set is
+  3 clicks from the root.
+- After a push: re-POST the URL list to IndexNow (free, no account).
+
+**Share the card page, not the app root.** `https://fyosamu.github.io/still-here/c/76.html`
+has a title, a description and a picture; `/still-here/` has none of that in a chat preview.
+
+### 2 · Pinterest — bulk upload
+
+1. Create a board (e.g. *STILL HERE — perspective reads*).
+2. **Create → Bulk create → Upload CSV** → pick `pins/pins.csv`.
+3. Pinterest fetches every `Media URL` itself — they are public files in this repo
+   (`…/still-here/pins/001.jpg`), so nothing needs re-uploading by hand.
+4. Columns: `Title · Description · Link · Media URL · Keywords` (keywords = the
+   category's tag block). Publish ~10/day so it does not look like a bot.
+
+### 3 · Short videos (TikTok / Reels / YouTube Shorts)
+
+`videos.md` has one section per card:
+
+| Field | Use |
+|---|---|
+| **Hook** | first 2 seconds — spoken *and* the first on-screen line |
+| **Voiceover** | full read at ~150 wpm, 13–24 s (avg 18 s) |
+| **On-screen text** | 4 stacked lines: hook → title → body → `STILL HERE · 150 free reads` |
+| **Subtitles** | ready-to-paste `.srt` inside the section |
+| **Caption** | upload description + the card's own link |
+| **Hashtags** | 9 tags: 7 category tags + `#STILLHERE` + `#shorts` |
+
+`videos.csv` is the same data flat, for a spreadsheet or a scheduling tool.
+
+**One video = 5 minutes of work:** CapCut → new 9:16 project → paste the voiceover
+into TTS (or record it) → drop in the `.srt` → type the 4 on-screen lines → render →
+paste the caption. Post 1–3 a day; the account is aimed at US/EU viewers, never Iran.
