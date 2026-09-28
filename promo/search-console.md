@@ -1,4 +1,4 @@
-# Google Search Console — the 155 pages are invisible right now
+# Google Search Console — the 161 pages are invisible right now
 
 Right now `site:fyosamu.github.io` returns **nothing**. Google has not been told the
 pages exist. IndexNow already covers Bing, Yandex and DuckDuckGo; Google needs an
@@ -45,9 +45,9 @@ If it says *file not found* instead, you picked the wrong method: go back and ch
 still-here/sitemap.xml
 ```
 
-That single file lists all **155 URLs**: the app, `all.html`, about/privacy/contact and
-`c/1.html … c/150.html`. Google picks it up on its own schedule — usually within a few
-days for a first crawl.
+That single file lists all **161 URLs**: the app, `all.html`, the six category hubs,
+about/privacy/contact and `c/1.html … c/150.html`. Google picks it up on its own
+schedule — usually within a few days for a first crawl.
 
 ## 4 · Force the first handful of pages
 
@@ -59,6 +59,7 @@ when it says you have reached the limit):
 ```
 https://fyosamu.github.io/still-here/
 https://fyosamu.github.io/still-here/all.html
+https://fyosamu.github.io/still-here/category/tapeworm.html
 https://fyosamu.github.io/still-here/c/1.html
 https://fyosamu.github.io/still-here/c/51.html
 https://fyosamu.github.io/still-here/c/76.html
@@ -66,17 +67,18 @@ https://fyosamu.github.io/still-here/c/101.html
 https://fyosamu.github.io/still-here/c/126.html
 ```
 
-Only these seven are worth the quota. Google will discover the other 148 through
-`all.html` and the sitemap — that is exactly why `all.html` links every card and the
-app footer links `all.html`.
+Only these eight are worth the quota. Google will discover the other 153 through
+`all.html`, the category hubs and the sitemap — that is exactly why every card is
+reachable from `all.html`, every card's breadcrumb links its category, and the app
+footer links `all.html`.
 
 ## 5 · What to look at afterwards
 
 | Report | Why it matters |
 |---|---|
 | **Performance** | Which queries bring impressions. This is how you find out which cards are worth making into videos. |
-| **Pages** (indexing) | How many of the 155 are actually indexed. Expect "Discovered – not crawled" for weeks on a new site — normal. |
-| **Sitemaps** | Confirms 155 submitted, 155 found. |
+| **Pages** (indexing) | How many of the 161 are actually indexed. Expect "Discovered – not crawled" for weeks on a new site — normal. |
+| **Sitemaps** | Confirms 161 submitted, 161 found. |
 
 Come back weekly. Nothing here is urgent after the first submission.
 

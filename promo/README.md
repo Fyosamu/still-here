@@ -11,7 +11,7 @@ account only you can make. What the pack removes is the writing.
 | `reddit.md` | 4 subreddits, a title + body for each, and the rules that get posts removed | you (Reddit) |
 | `telegram.md` | How to run the channel, and how to schedule a month at once | you (Telegram) |
 | `descriptions.md` | Short / medium / long descriptions for every directory and newsletter | you or me |
-| `search-console.md` | Google Search Console — 155 pages are waiting for this | you (2 minutes) |
+| `search-console.md` | Google Search Console — 161 pages are waiting for this | you (2 minutes) |
 
 Re-generate the two CSVs after any copy change:
 
@@ -24,7 +24,7 @@ node tools/make-promo.mjs
 
 ## Order of operations (best return per minute)
 
-1. **Google Search Console** — `search-console.md`. 155 pages are built but Google
+1. **Google Search Console** — `search-console.md`. 161 pages are built but Google
    has not been told. This is the only step that brings visitors while you sleep.
 2. **Telegram channel** — `telegram-plan.csv`, schedule the whole month in one
    sitting. Free, instant, no approval queue.

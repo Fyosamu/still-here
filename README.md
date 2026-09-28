@@ -24,7 +24,8 @@
 | File | What it does |
 |---|---|
 | `c/1.html … c/150.html` | One indexable page per card (`tools/build-pages.mjs`) |
-| `all.html` + `sitemap.xml` | Crawl entry point + 155 URLs |
+| `category/` | Six category hub pages — the middle level of the site |
+| `all.html` + `sitemap.xml` | Crawl entry point + 161 URLs |
 | `content.json` | Machine-readable dump of all 150 cards |
 | `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
@@ -507,7 +508,8 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 
 | Command | Writes |
 |---|---|
-| `node tools/build-pages.mjs` | `c/1.html … c/150.html`, `all.html`, `sitemap.xml`, `content.json` |
+| `node tools/build-pages.mjs` | `c/1.html … c/150.html`, `category/*.html`, `all.html`, `sitemap.xml`, `content.json` |
+| `node tools/verify-pages.js` | link / tag / sitemap check across all 161 pages |
 | `python tools/make-pins.py` | `pins/001.jpg … pins/150.jpg`, `pins/pins.csv` |
 | `node tools/make-videos.mjs` | `videos.md`, `videos.csv` |
 | `node tools/make-promo.mjs` | `promo/x-posts.csv`, `promo/telegram-plan.csv`, `promo/telegram-messages.txt` |
@@ -518,8 +520,14 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 
 - One static page per card, canonical `https://fyosamu.github.io/still-here/c/<n>.html`,
   prev/next links so a crawler can walk all 150 without JavaScript.
+- **Six category hubs** (`category/numbers.html` … `category/loose.html`) sit in the
+  middle — `all.html` → category → card — so the site is three levels deep instead of
+  one index pointing at 150 unrelated URLs. Each hub carries an `ItemList` of its 25
+  cards, and every card's breadcrumb links back to its category.
 - `all.html` links every card and is reachable from the app footer → the whole set is
   3 clicks from the root.
+- `node tools/verify-pages.js` walks all 161 pages checking local links, `<h1>` /
+  canonical / description counts, tag balance and sitemap coverage.
 - After a push: re-POST the URL list to IndexNow (free, no account).
 
 **Share the card page, not the app root.** `https://fyosamu.github.io/still-here/c/76.html`

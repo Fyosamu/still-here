@@ -71,8 +71,10 @@ search engines would see 1 URL where there are 150 pieces of content. So a
 generator (Node) emits:
 
 - c/1.html … c/150.html — real pages, canonical tags, prev/next, Article JSON-LD
+- category/*.html — six hub pages, so it's index → category → card instead of
+  one index pointing at 150 unrelated URLs; each carries an ItemList of its 25
 - all.html — crawl entry point, linked from the footer
-- sitemap.xml — 155 URLs
+- sitemap.xml — 161 URLs
 
 plus a service worker for offline and a manifest so it installs. Ad slots are
 keyed from app.js so the static pages and the SPA use the same units.
