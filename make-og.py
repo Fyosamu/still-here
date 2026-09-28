@@ -7,8 +7,12 @@ Run:  python make-og.py
 import math
 import random
 import os
+import sys
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools"))
+from imgutil import key_out_background  # noqa: E402
 
 W, H = 1200, 630
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -41,60 +45,33 @@ glow = glow.filter(ImageFilter.GaussianBlur(96))
 img = Image.alpha_composite(img.convert("RGBA"), glow)
 d = ImageDraw.Draw(img, "RGBA")
 
-# stars — kept out of the text column so nothing twinkles through a letter
+# stars — kept out of the text column so nothing twinkles through a letter.
+# Drawn on their own layer: PIL 11 writes RGBA ink straight through instead of
+# blending it, so a translucent star would otherwise flatten to full white.
 TXT = (330, 195, 990, 575)
+stars = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+sd = ImageDraw.Draw(stars, "RGBA")
 for _ in range(340):
     x, y = random.uniform(0, W), random.uniform(0, H)
     if TXT[0] < x < TXT[2] and TXT[1] < y < TXT[3]:
         continue
     r = random.choice([0.7, 0.9, 1.1, 1.4, 1.8, 2.3])
     a = random.randint(70, 235)
-    d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 255, 255, a))
+    sd.ellipse([x - r, y - r, x + r, y + r], fill=(255, 255, 255, a))
     if r > 2 and random.random() < 0.35:
-        d.line([(x - 6, y), (x + 6, y)], fill=(255, 255, 255, 46))
-        d.line([(x, y - 6), (x, y + 6)], fill=(255, 255, 255, 46))
+        sd.line([(x - 6, y), (x + 6, y)], fill=(255, 255, 255, 46))
+        sd.line([(x, y - 6), (x, y + 6)], fill=(255, 255, 255, 46))
+img = Image.alpha_composite(img, stars)
+d = ImageDraw.Draw(img, "RGBA")
 
 # a faint planet arc, bottom right
 d.ellipse([W - 300, H - 120, W + 420, H + 600], outline=(124, 92, 255, 60), width=3)
 
 # ------------------------------------------------------------------- content
-def key_out_background(path, thresh=46):
-    """The exported icon sits on an opaque black square. Flood it from the
-    border so the square disappears but the black outlines *inside* the
-    smiley survive (they are never reached by the flood)."""
-    src = Image.open(path).convert("RGBA")
-    src = src.resize((416, 416), Image.LANCZOS)   # 2x the drawn size, downscale smooths the edge
-    px = src.load()
-    w, h = src.size
-
-    def is_bg(p):
-        return p[0] < thresh and p[1] < thresh and p[2] < thresh
-
-    seen = bytearray(w * h)
-    stack = [(x, 0) for x in range(w)] + [(x, h - 1) for x in range(w)]
-    stack += [(0, y) for y in range(h)] + [(w - 1, y) for y in range(h)]
-    while stack:
-        x, y = stack.pop()
-        if not (0 <= x < w and 0 <= y < h):
-            continue
-        i = y * w + x
-        if seen[i]:
-            continue
-        seen[i] = 1
-        if not is_bg(px[x, y]):
-            continue
-        px[x, y] = (0, 0, 0, 0)
-        stack.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
-
-    # feather the cut so the silhouette doesn't look scissored
-    alpha = src.getchannel("A").filter(ImageFilter.GaussianBlur(1.2))
-    src.putalpha(alpha)
-    return src
-
-
 logo_path = os.path.join(HERE, "icon-512.png")
 if os.path.exists(logo_path):
-    logo = key_out_background(logo_path)
+    # 416 = 2x the drawn size; downscaling afterwards smooths the cut edge
+    logo = key_out_background(logo_path, size=416)
     logo = logo.resize((216, 216), Image.LANCZOS)
     # soft halo behind it
     halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
