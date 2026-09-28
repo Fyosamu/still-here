@@ -28,6 +28,7 @@
 | `content.json` | Machine-readable dump of all 150 cards |
 | `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
+| `promo/` | Ready-to-paste posts: Reddit, Telegram, X, directory descriptions |
 | `ad/300x250.html` | The banner unit the static pages frame (keys come from `app.js`) |
 | `og.png` | Share card for Telegram / X / Facebook |
 
@@ -509,6 +510,7 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 | `node tools/build-pages.mjs` | `c/1.html … c/150.html`, `all.html`, `sitemap.xml`, `content.json` |
 | `python tools/make-pins.py` | `pins/001.jpg … pins/150.jpg`, `pins/pins.csv` |
 | `node tools/make-videos.mjs` | `videos.md`, `videos.csv` |
+| `node tools/make-promo.mjs` | `promo/x-posts.csv`, `promo/telegram-plan.csv`, `promo/telegram-messages.txt` |
 | `node tools/verify-videos.js` | checks every hook, on-screen line, SRT cue and CSV column |
 | `python make-og.py` | `og.png` (1200×630) |
 
@@ -562,3 +564,22 @@ banner under the text — this machine gets HTTP 403 from the ad host.
 **One video = 5 minutes of work:** CapCut → new 9:16 project → paste the voiceover
 into TTS (or record it) → drop in the `.srt` → type the 4 on-screen lines → render →
 paste the caption. Post 1–3 a day; the account is aimed at US/EU viewers, never Iran.
+
+---
+
+## 14. 📣 Promo pack — `promo/`
+
+Everything a human would otherwise have to write by hand, pre-written in English:
+
+| File | What's in it |
+|---|---|
+| `promo/README.md` | Order of operations and the three rules that keep accounts alive |
+| `promo/search-console.md` | Google Search Console — **do this first**, 10–20 min once |
+| `promo/x-posts.csv` | 150 ready X/Bluesky posts, char-counted under 280 |
+| `promo/telegram-plan.csv` + `.txt` | 30 days × 5 cards, full message text |
+| `promo/telegram.md` | How to set up the channel and queue a month in 20 minutes |
+| `promo/reddit.md` | 4 posts + the subreddits where links are auto-removed |
+| `promo/descriptions.md` | 80 / 160 / 300 / 600 / 1200-character descriptions + pitch email |
+
+All of it needs accounts only you can make — the pack removes the writing, not the
+signing up. Start with `promo/README.md`.
