@@ -6,6 +6,7 @@
 
      promo/x-posts.csv        one ready-to-schedule post per card
      promo/telegram-plan.csv  30 days × 5 cards, full message text
+     promo/video-plan.csv     75 days × 2 videos, file + caption + hashtags
 
    node tools/make-promo.mjs
    ============================================================ */
@@ -60,6 +61,26 @@ const writeCsv = (name, cols, rows) => {
   );
   return p;
 };
+
+/** RFC4180 reader — videos.csv holds quoted cells with real newlines */
+function readCsv(text) {
+  const rows = [];
+  let row = [], field = "", inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false;
+      } else field += c;
+    } else if (c === '"') inQ = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+    else if (c !== "\r") field += c;
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  const [head, ...body] = rows.filter((r) => r.some((v) => v !== ""));
+  return body.map((r) => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
+}
 
 /* -------------------------------------------------- one X / Bluesky post */
 const TAGS = {
@@ -163,10 +184,54 @@ fs.writeFileSync(
   "utf8"
 );
 
+/* --------------------------------------------------- the video upload plan */
+/* 2 a day for 75 days, walking the six categories round-robin so two
+   consecutive uploads are never the same flavour of video. */
+const slug = (t) =>
+  String(t).replace(/\$/g, "").replace(/[^a-zA-Z0-9]+/g, "").slice(0, 34) || "card";
+
+const scripts = new Map(
+  readCsv(fs.readFileSync(path.join(ROOT, "videos.csv"), "utf8")).map((r) => [
+    Number(r.Number),
+    r,
+  ])
+);
+
+const byCat = new Map(CATEGORIES.map((c) => [c.id, []]));
+flat.forEach((_, i) => byCat.get(flat[i].cat.id).push(i + 1));
+
+const order = [];
+for (let round = 0; round < 25; round++)
+  for (const cat of CATEGORIES) order.push(byCat.get(cat.id)[round]);
+
+const PER_DAY_V = 2;
+const vRows = [];
+for (let idx = 0; idx < order.length; idx++) {
+  const n = order[idx];
+  const s = scripts.get(n) || {};
+  const file = `build/reels/${String(n).padStart(3, "0")}-${slug(s.Title || flat[n - 1].it.t)}.mp4`;
+  vRows.push([
+    Math.floor(idx / PER_DAY_V) + 1,
+    (idx % PER_DAY_V) + 1,
+    file,
+    clean(s.Caption || `${flat[n - 1].it.t}\n${BASE}c/${n}.html`),
+    clean(s.Hashtags || ""),
+    `${BASE}c/${n}.html`,
+  ]);
+}
+
+const videoCsv = writeCsv(
+  "video-plan.csv",
+  ["Day", "Slot", "File", "Caption", "Hashtags", "Link"],
+  vRows
+);
+
 /* -------------------------------------------------------------- report */
 const lens = xRows.map((r) => r[4]);
 console.log(`posts   : ${xRows.length} (${Math.min(...lens)}–${Math.max(...lens)} chars, X limit 280)`);
 console.log(`days    : ${days} × ${PER_DAY} cards`);
+console.log(`videos  : ${vRows.length} over ${Math.ceil(vRows.length / PER_DAY_V)} days × ${PER_DAY_V}`);
 console.log(`wrote   : ${path.relative(ROOT, xCsv)}`);
 console.log(`wrote   : ${path.relative(ROOT, tgCsv)}`);
 console.log(`wrote   : ${path.relative(ROOT, tgTxt)}`);
+console.log(`wrote   : ${path.relative(ROOT, videoCsv)}`);

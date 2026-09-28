@@ -8,12 +8,14 @@ account only you can make. What the pack removes is the writing.
 |---|---|---|
 | `x-posts.csv` | **150 ready posts** — title, hook, link, hashtags, char count | you (X / Bluesky / Threads) |
 | `telegram-plan.csv` | **30 days × 5 cards**, full message text ready to paste | you (Telegram channel) |
+| `video-plan.csv` | **75 days × 2 videos** — file to upload, caption, hashtags, link | you (TikTok / Reels / Shorts) |
+| `videos.md` | Where to upload each file, and the rules that keep the accounts alive | you (5 minutes) |
 | `reddit.md` | 4 subreddits, a title + body for each, and the rules that get posts removed | you (Reddit) |
 | `telegram.md` | How to run the channel, and how to schedule a month at once | you (Telegram) |
 | `descriptions.md` | Short / medium / long descriptions for every directory and newsletter | you or me |
 | `search-console.md` | Google Search Console — 161 pages are waiting for this | you (2 minutes) |
 
-Re-generate the two CSVs after any copy change:
+Re-generate the CSVs after any copy change:
 
 ```
 node tools/build-pages.mjs      # pages first, they hold the links
@@ -30,7 +32,10 @@ node tools/make-promo.mjs
    sitting. Free, instant, no approval queue.
 3. **Pinterest bulk upload** — `pins/pins.csv` (see README §13). One CSV, 150 pins.
 4. **X / Bluesky** — `x-posts.csv`, 1–3 a day. Do not dump all 150 at once.
-5. **Reddit** — `reddit.md`. Slow, and it punishes spam harder than anything else.
+5. **Short videos** — `video-plan.csv`. The 150 mp4s are already rendered in
+   `build/reels/`; the plan says which file goes up on which day, with the caption
+   and hashtags already attached. Two a day, no editing.
+6. **Reddit** — `reddit.md`. Slow, and it punishes spam harder than anything else.
    Do this last, and never post the same link to two subreddits on the same day.
 
 ## The three rules that keep the accounts alive

@@ -29,6 +29,7 @@
 | `content.json` | Machine-readable dump of all 150 cards |
 | `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
+| `build/reels/` | The 150 **finished** videos + their `.srt` — local only, never committed |
 | `promo/` | Ready-to-paste posts: Reddit, Telegram, X, directory descriptions |
 | `ad/300x250.html` | The banner unit the static pages frame (keys come from `app.js`) |
 | `og.png` | Share card for Telegram / X / Facebook |
@@ -512,6 +513,8 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 | `node tools/verify-pages.js` | link / tag / sitemap check across all 161 pages |
 | `python tools/make-pins.py` | `pins/001.jpg … pins/150.jpg`, `pins/pins.csv` |
 | `node tools/make-videos.mjs` | `videos.md`, `videos.csv` |
+| `python tools/make-reels.py` | `build/reels/001-….mp4 … 150-….mp4` + matching `.srt` (the finished videos) |
+| `python tools/verify-reels.py` | 1080×1920 / h264+aac / duration / `.srt` sync check on all 150 |
 | `node tools/make-promo.mjs` | `promo/x-posts.csv`, `promo/telegram-plan.csv`, `promo/telegram-messages.txt` |
 | `node tools/verify-videos.js` | checks every hook, on-screen line, SRT cue and CSV column |
 | `python make-og.py` | `og.png` (1200×630) |
@@ -556,22 +559,39 @@ banner under the text — this machine gets HTTP 403 from the ad host.
 
 ### 3 · Short videos (TikTok / Reels / YouTube Shorts)
 
-`videos.md` has one section per card:
+**All 150 are already rendered.** `build/reels/001-30000.mp4` … `150-….mp4` —
+1080×1920, 30 fps, H.264 + AAC, each with its own `.srt` sidecar next to it.
+No CapCut, no recording, no editing:
+
+```
+python tools/make-reels.py              # everything
+python tools/make-reels.py --only 76    # one video
+python tools/make-reels.py --force      # re-render
+python tools/make-reels.py --no-voice   # reuse the synthesised audio
+```
+
+| Piece | Where it comes from |
+|---|---|
+| **Voice** | Microsoft's neural `en-US-AndrewNeural` — free, no API key — synthesised from the `Voiceover` column into `build/audio/` |
+| **Picture** | 6 background plates + 6 category chips built from `content.json`: slow drift, teal progress bar, starfield |
+| **Headline** | the 4 on-screen lines, placed against the *real* speech timing (the script assumed 2.5 words/s; the voice does what it does) |
+| **Subtitles** | the script's `.srt`, rescaled to the actual audio length, burned in and written beside the mp4 |
+| **Footer** | `STILL HERE · 150 reads · free · no account` + `READ 076 OF 150` |
+
+Needs `ffmpeg` on PATH and `pip install edge-tts pillow`. `build/` is gitignored, so
+the mp4s never bloat the repo — re-run the script any time instead of committing them.
+
+`videos.md` / `videos.csv` remain the source for the parts that are text:
 
 | Field | Use |
 |---|---|
 | **Hook** | first 2 seconds — spoken *and* the first on-screen line |
-| **Voiceover** | full read at ~150 wpm, 13–24 s (avg 18 s) |
-| **On-screen text** | 4 stacked lines: hook → title → body → `STILL HERE · 150 free reads` |
-| **Subtitles** | ready-to-paste `.srt` inside the section |
+| **Voiceover** | full read, 13–24 s (avg 18 s) |
 | **Caption** | upload description + the card's own link |
 | **Hashtags** | 9 tags: 7 category tags + `#STILLHERE` + `#shorts` |
 
-`videos.csv` is the same data flat, for a spreadsheet or a scheduling tool.
-
-**One video = 5 minutes of work:** CapCut → new 9:16 project → paste the voiceover
-into TTS (or record it) → drop in the `.srt` → type the 4 on-screen lines → render →
-paste the caption. Post 1–3 a day; the account is aimed at US/EU viewers, never Iran.
+Upload 1–3 a day, paste the caption from the CSV, link the card page — aimed at
+US/EU viewers, never Iran.
 
 ---
 
@@ -585,6 +605,8 @@ Everything a human would otherwise have to write by hand, pre-written in English
 | `promo/search-console.md` | Google Search Console — **do this first**, 10–20 min once |
 | `promo/x-posts.csv` | 150 ready X/Bluesky posts, char-counted under 280 |
 | `promo/telegram-plan.csv` + `.txt` | 30 days × 5 cards, full message text |
+| `promo/video-plan.csv` | 75 days × 2 videos — file, caption, hashtags, link |
+| `promo/videos.md` | Where to upload them and what not to do |
 | `promo/telegram.md` | How to set up the channel and queue a month in 20 minutes |
 | `promo/reddit.md` | 4 posts + the subreddits where links are auto-removed |
 | `promo/descriptions.md` | 80 / 160 / 300 / 600 / 1200-character descriptions + pitch email |
