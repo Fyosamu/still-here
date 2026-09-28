@@ -75,6 +75,12 @@ footer nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:12
 footer a{color:#8C93B8;text-decoration:none}
 footer a:hover{color:#9B6BFF}
 .back{display:inline-block;margin-top:6px;font-size:12.5px;color:#8C93B8}
+/* ad slot — fixed 300×250, centred, never overflows a 360px phone */
+.ad-slot{display:flex;flex-direction:column;align-items:center;gap:7px;
+  margin:26px 0 4px;min-height:0}
+.ad-label{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#5E6488}
+.ad-slot iframe{display:block;border:0;border-radius:10px;
+  background:rgba(255,255,255,.03)}
 /* index page */
 .toc h2{margin:34px 0 10px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
   color:#3BE0C8;font-weight:600}
@@ -119,6 +125,12 @@ footer a:hover{color:#9B6BFF}
     <p class="crumb"><b>&#128218;</b> the full list <span>&middot;</span> 150 reads</p>
     <h1>All 150 reads</h1>
     <div class="card">Every read in STILL HERE, in order: the numbers, the biology of you, why you got a seat, the tapeworm you should be grateful you're not, and a few loose…</div>
+
+    <div class="ad-slot">
+      <span class="ad-label">Advertisement</span>
+      <iframe src="ad/300x250.html" width="300" height="250"
+        scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
+    </div>
       <h2>📊 THE NUMBERS &mdash; <span style="color:#8C93B8;font-weight:400">Not a complaint. Just arithmetic.</span></h2>
       <ol>
         <li><a href="c/1.html"><i>1</i><span>$30,000</span></a></li>
@@ -292,6 +304,12 @@ footer a:hover{color:#9B6BFF}
       <b>The app is the point.</b>
       <p>Install STILL HERE and read all 150 with the cards, the reader and the offline cache &mdash; not a wall of links.</p>
       <a class="btn" href="index.html">Open STILL HERE &rarr;</a>
+    </div>
+
+    <div class="ad-slot">
+      <span class="ad-label">Advertisement</span>
+      <iframe src="ad/300x250.html" width="300" height="250"
+        scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
     </div>
   </main>
   <a class="back" href="index.html">&larr; Still Here home</a>

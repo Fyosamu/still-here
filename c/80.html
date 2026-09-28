@@ -75,6 +75,12 @@ footer nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:12
 footer a{color:#8C93B8;text-decoration:none}
 footer a:hover{color:#9B6BFF}
 .back{display:inline-block;margin-top:6px;font-size:12.5px;color:#8C93B8}
+/* ad slot — fixed 300×250, centred, never overflows a 360px phone */
+.ad-slot{display:flex;flex-direction:column;align-items:center;gap:7px;
+  margin:26px 0 4px;min-height:0}
+.ad-label{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#5E6488}
+.ad-slot iframe{display:block;border:0;border-radius:10px;
+  background:rgba(255,255,255,.03)}
 /* index page */
 .toc h2{margin:34px 0 10px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
   color:#3BE0C8;font-weight:600}
@@ -140,6 +146,11 @@ footer a:hover{color:#9B6BFF}
 
     <div class="card">It never picked a meal, a room, a name. It just arrived inside a system and did the only thing it knows how to do.</div>
 
+    <div class="ad-slot">
+      <span class="ad-label">Advertisement</span>
+      <iframe src="../ad/300x250.html" width="300" height="250"
+        scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
+    </div>
     <div class="box">
       <b>There are 70 more like this.</b>
       <p>STILL HERE is a free reading app &mdash; 150 short reads across six categories. Works offline, no account, no catch.</p>

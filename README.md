@@ -28,6 +28,7 @@
 | `content.json` | Machine-readable dump of all 150 cards |
 | `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
+| `ad/300x250.html` | The banner unit the static pages frame (keys come from `app.js`) |
 | `og.png` | Share card for Telegram / X / Facebook |
 
 **Content — 6 × 25 = 150 cards**
@@ -521,6 +522,18 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 
 **Share the card page, not the app root.** `https://fyosamu.github.io/still-here/c/76.html`
 has a title, a description and a picture; `/still-here/` has none of that in a chat preview.
+
+### 1b · The static pages carry ads too
+
+Every card page frames the **300×250 Adsterra unit** under the article (and `all.html`
+frames two), so traffic that arrives from Google or Reddit earns instead of leaking.
+Keys are read out of `app.js` — change them there, not here.
+
+Each unit sits in its own document (`ad/300x250.html`) because two Adsterra units on
+one page would collide over the global `atOptions`; a frame also keeps their
+`document.write` away from our markup. Check it the honest way: open
+`https://fyosamu.github.io/still-here/c/76.html` **on your own phone** and look for a
+banner under the text — this machine gets HTTP 403 from the ad host.
 
 ### 2 · Pinterest — bulk upload
 

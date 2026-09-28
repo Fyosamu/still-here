@@ -105,6 +105,12 @@ footer nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:12
 footer a{color:#8C93B8;text-decoration:none}
 footer a:hover{color:#9B6BFF}
 .back{display:inline-block;margin-top:6px;font-size:12.5px;color:#8C93B8}
+/* ad slot — fixed 300×250, centred, never overflows a 360px phone */
+.ad-slot{display:flex;flex-direction:column;align-items:center;gap:7px;
+  margin:26px 0 4px;min-height:0}
+.ad-label{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#5E6488}
+.ad-slot iframe{display:block;border:0;border-radius:10px;
+  background:rgba(255,255,255,.03)}
 /* index page */
 .toc h2{margin:34px 0 10px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
   color:#3BE0C8;font-weight:600}
@@ -122,6 +128,55 @@ footer a:hover{color:#9B6BFF}
 
 const url = (rel) => ORIGIN + BASE + rel;
 const APP = ORIGIN + BASE;
+
+/* ---------------------------------------------------------------- ads
+   The static pages are where Google/Reddit traffic lands, so they need
+   the same banner the app uses. Keys are read out of app.js so there is
+   exactly one place to change them.
+
+   Each unit lives in its own tiny document under ad/ and is framed: two
+   Adsterra units would otherwise fight over the same global `atOptions`,
+   and a frame also keeps their document.write off our page. */
+const AD_KEYS = Object.fromEntries(
+  [...fs.readFileSync(path.join(ROOT, "app.js"), "utf8").matchAll(
+    /(\w+):\s*"([0-9a-f]{32})"/g
+  )].map((m) => [m[1], m[2]])
+);
+const AD_W = 300;
+const AD_H = 250;
+const AD_KEY = AD_KEYS.reader;   // 300×250 — also the in-app reader unit
+
+function adDoc(key, w, h) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Advertisement</title>
+<style>
+html,body{margin:0;padding:0;overflow:hidden;background:transparent}
+body{text-align:center}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+\tatOptions = { 'key':'${key}', 'format':'iframe', 'height':${h}, 'width':${w}, 'params':{} };
+</script>
+<script type="text/javascript" src="https://www.highrevenueformat.com/${key}/invoke.js"></script>
+</body>
+</html>
+`;
+}
+
+/** `rel` is "" at the site root and "../" from c/ */
+function adSlot(rel) {
+  if (!AD_KEY) return "";
+  return `    <div class="ad-slot">
+      <span class="ad-label">Advertisement</span>
+      <iframe src="${rel}ad/${AD_W}x${AD_H}.html" width="${AD_W}" height="${AD_H}"
+        scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
+    </div>`;
+}
 
 function head({ title, desc, canonical, jsonld }) {
   return `<!doctype html>
@@ -172,6 +227,13 @@ const CHROME = `  <a class="back" href="../index.html">&larr; Still Here home</a
 
 /* ------------------------------------------------------- emit the cards */
 fs.mkdirSync(path.join(ROOT, "c"), { recursive: true });
+if (AD_KEY) {
+  fs.mkdirSync(path.join(ROOT, "ad"), { recursive: true });
+  fs.writeFileSync(
+    path.join(ROOT, "ad", `${AD_W}x${AD_H}.html`),
+    adDoc(AD_KEY, AD_W, AD_H)
+  );
+}
 
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
@@ -251,6 +313,7 @@ for (const card of flat) {
 
     <div class="card">${esc(it.b)}</div>
 
+${adSlot("../")}
     <div class="box">
       <b>There are ${150 - slug} more like this.</b>
       <p>STILL HERE is a free reading app &mdash; 150 short reads across six categories. Works offline, no account, no catch.</p>
@@ -328,12 +391,16 @@ const tocHtml = `${head({
     <p class="crumb"><b>&#128218;</b> the full list <span>&middot;</span> 150 reads</p>
     <h1>All 150 reads</h1>
     <div class="card">${esc(tocDesc)}</div>
+
+${adSlot("")}
 ${toc}
     <div class="box">
       <b>The app is the point.</b>
       <p>Install STILL HERE and read all 150 with the cards, the reader and the offline cache &mdash; not a wall of links.</p>
       <a class="btn" href="index.html">Open STILL HERE &rarr;</a>
     </div>
+
+${adSlot("")}
   </main>
 ${CHROME.replace(/\.\.\//g, "")}
 </body>
