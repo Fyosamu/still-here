@@ -111,6 +111,11 @@ footer a:hover{color:#9B6BFF}
 .ad-label{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#5E6488}
 .ad-slot iframe{display:block;border:0;border-radius:10px;
   background:rgba(255,255,255,.03)}
+/* leaderboard 728×90 — its own band under the sticky header, because the
+   reading column beside it is only 720px wide; hidden on a phone, which
+   gets the 300×250 further down the page instead */
+.ad-slot--wide{width:fit-content;max-width:100%;margin:14px auto 0}
+@media (max-width:800px){.ad-slot--wide{display:none}}
 /* index page */
 .toc h2{margin:34px 0 10px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
   color:#3BE0C8;font-weight:600}
@@ -166,6 +171,10 @@ const AD_W = 300;
 const AD_H = 250;
 const AD_KEY = AD_KEYS.reader;   // 300×250 — also the in-app reader unit
 
+const AD_WIDE_W = 728;
+const AD_WIDE_H = 90;
+const AD_WIDE_KEY = AD_KEYS.feed; // 728×90 — the second unit, otherwise PWA-only
+
 function adDoc(key, w, h) {
   return `<!doctype html>
 <html lang="en">
@@ -194,6 +203,16 @@ function adSlot(rel) {
   return `    <div class="ad-slot">
       <span class="ad-label">Advertisement</span>
       <iframe src="${rel}ad/${AD_W}x${AD_H}.html" width="${AD_W}" height="${AD_H}"
+        scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
+    </div>`;
+}
+
+/** 728×90 leader, first thing inside <main> so it never crowds the h1 */
+function adSlotWide(rel) {
+  if (!AD_WIDE_KEY) return "";
+  return `    <div class="ad-slot ad-slot--wide">
+      <span class="ad-label">Advertisement</span>
+      <iframe src="${rel}ad/${AD_WIDE_W}x${AD_WIDE_H}.html" width="${AD_WIDE_W}" height="${AD_WIDE_H}"
         scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
     </div>`;
 }
@@ -252,6 +271,13 @@ if (AD_KEY) {
   fs.writeFileSync(
     path.join(ROOT, "ad", `${AD_W}x${AD_H}.html`),
     adDoc(AD_KEY, AD_W, AD_H)
+  );
+}
+if (AD_WIDE_KEY) {
+  fs.mkdirSync(path.join(ROOT, "ad"), { recursive: true });
+  fs.writeFileSync(
+    path.join(ROOT, "ad", `${AD_WIDE_W}x${AD_WIDE_H}.html`),
+    adDoc(AD_WIDE_KEY, AD_WIDE_W, AD_WIDE_H)
   );
 }
 
@@ -423,6 +449,7 @@ CATEGORIES.forEach((cat, ci) => {
     <a class="open" href="../index.html">Open the app</a>
   </header>
 
+${adSlotWide("../")}
   <main>
     <p class="crumb">
       <a href="../all.html">All 150</a>
@@ -511,6 +538,7 @@ const tocHtml = `${head({
     <a class="open" href="index.html">Open the app</a>
   </header>
 
+${adSlotWide("")}
   <main class="toc">
     <p class="crumb"><b>&#128218;</b> the full list <span>&middot;</span> 150 reads</p>
     <h1>All 150 reads</h1>

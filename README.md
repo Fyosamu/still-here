@@ -31,7 +31,7 @@
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
 | `build/reels/` | The 150 **finished** videos + their `.srt` — local only, never committed |
 | `promo/` | Ready-to-paste posts: Reddit, Telegram, X, directory descriptions |
-| `ad/300x250.html` | The banner unit the static pages frame (keys come from `app.js`) |
+| `ad/300x250.html` + `ad/728x90.html` | The banner units the static pages frame (keys come from `app.js`) |
 | `og.png` | Share card for Telegram / X / Facebook |
 
 **Content — 6 × 25 = 150 cards**
@@ -538,13 +538,18 @@ has a title, a description and a picture; `/still-here/` has none of that in a c
 
 ### 1b · The static pages carry ads too
 
-Every card page frames the **300×250 Adsterra unit** under the article (and `all.html`
+Every card page frames the **300×250 Adsterra unit** under the article (`all.html`
 frames two), so traffic that arrives from Google or Reddit earns instead of leaking.
+The **728×90** unit sits in its own band under the sticky header of `all.html` and the
+six category hubs — the reading column beside it is only 720px wide, so it lives
+outside `main` and is dropped below 800px, where the 300×250 further down is the unit.
+`about` / `privacy` / `contact` carry one centred 300×250 each. Every HTML file on the
+site now carries an ad except `index.html`, which is the app itself (no ad on entry).
 Keys are read out of `app.js` — change them there, not here.
 
-Each unit sits in its own document (`ad/300x250.html`) because two Adsterra units on
-one page would collide over the global `atOptions`; a frame also keeps their
-`document.write` away from our markup. Check it the honest way: open
+Each unit sits in its own document (`ad/300x250.html`, `ad/728x90.html`) because two
+Adsterra units on one page would collide over the global `atOptions`; a frame also keeps
+their `document.write` away from our markup. Check it the honest way: open
 `https://fyosamu.github.io/still-here/c/76.html` **on your own phone** and look for a
 banner under the text — this machine gets HTTP 403 from the ad host.
 
