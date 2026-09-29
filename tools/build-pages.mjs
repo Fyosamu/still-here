@@ -322,7 +322,7 @@ for (const card of flat) {
       url: canonical,
       image: url("og.png"),
       datePublished: "2026-09-27",
-      dateModified: "2026-09-28",
+      dateModified: "2026-09-30",
       inLanguage: "en",
       articleSection: cat.title,
       publisher: { "@type": "Organization", name: "STILL HERE", url: APP },
