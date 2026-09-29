@@ -20,13 +20,35 @@ const payload = {
   urlList,
 };
 
-const res = await fetch("https://api.indexnow.org/indexnow", {
-  method: "POST",
-  headers: { "Content-Type": "application/json; charset=utf-8" },
-  body: JSON.stringify(payload),
-});
+const endpoints = [
+  "https://api.indexnow.org/indexnow",
+  "https://www.bing.com/indexnow",
+  "https://yandex.com/indexnow",
+];
 
-console.log(`POST ${urlList.length} urls -> ${res.status} ${res.statusText}`);
+/* one host can be unreachable from a given network while the others are
+   fine — try them in turn rather than failing the whole run on the first */
+let res = null;
+for (const ep of endpoints) {
+  try {
+    res = await fetch(ep, {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(20000),
+    });
+    console.log(`POST ${urlList.length} urls -> ${ep} => ${res.status} ${res.statusText}`);
+    break;
+  } catch (err) {
+    console.log(`${ep} unreachable (${err.cause?.code || err.message}) — trying the next`);
+  }
+}
+
+if (!res) {
+  console.log("FAILED — no IndexNow endpoint reachable from this network. Retry later.");
+  process.exit(1);
+}
+
 const body = (await res.text()).trim();
 if (body) console.log(body.slice(0, 400));
 console.log(
