@@ -230,6 +230,10 @@ function head({ title, desc, canonical, jsonld, rel = "../" }) {
 <link rel="canonical" href="${attr(canonical)}" />
 <link rel="icon" href="${rel}logo.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="${rel}icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Still Here" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="STILL HERE" />
 <meta property="og:title" content="${attr(title)}" />

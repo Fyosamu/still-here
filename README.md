@@ -17,6 +17,7 @@
 | `about.html` | About page — **AdSense requires this** |
 | `privacy.html` | Privacy policy — **AdSense requires this** |
 | `contact.html` | Contact page — **AdSense requires this** |
+| `get.html` | Download / install guide — the page you share and list |
 | `README.md` | This file |
 
 **Growth kit** (generated — never hand-edit, re-run instead)

@@ -59,7 +59,7 @@ The ad is now on **every** surface:
 | App — between categories | 728×90 in-feed |
 | Card page (`/c/76.html`) | 300×250 under the article |
 | Index (`all.html`) + 6 category hubs | 728×90 under the header, 300×250 × 2 |
-| About / Privacy / Contact | 300×250, one centred unit |
+| About / Privacy / Contact / Download (`get.html`) | 300×250, one centred unit |
 
 Traffic that arrives from Google, Reddit or a shared link lands on a card page, so
 that traffic earns too — it used to earn nothing.
