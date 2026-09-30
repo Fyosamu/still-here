@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Download STILL HERE — install it on your phone</title>
+<meta name="description" content="STILL HERE is free and installs in two taps: iPhone (Share → Add to Home Screen), Android (Chrome → Install app), computer (install icon in the address bar). No app store, no account." />
+<link rel="canonical" href="https://fyosamu.github.io/still-here/get.html" />
+<meta name="theme-color" content="#04050c" />
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="STILL HERE" />
+<meta property="og:title" content="Download STILL HERE — install it on your phone" />
+<meta property="og:description" content="Free, 150 one-minute reads, installs in two taps. No app store, no account." />
+<meta property="og:url" content="https://fyosamu.github.io/still-here/get.html" />
+<meta property="og:image" content="https://fyosamu.github.io/still-here/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Download STILL HERE — install it on your phone" />
+<meta name="twitter:description" content="Free, 150 one-minute reads, installs in two taps. No app store, no account." />
+<meta name="twitter:image" content="https://fyosamu.github.io/still-here/og.png" />
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="index.html"><img src="logo.svg" alt="Still Here" class="brand-logo" /></a>
+    <div class="brand-text"><h1>STILL HERE</h1><span>download</span></div>
+  </div>
+  <a class="ghost-btn" href="index.html" style="text-decoration:none">Open the app</a>
+</header>
+
+<article class="page">
+  <h2>Download STILL HERE</h2>
+  <p class="lede">Free · installs in two taps · no app store, no account, no APK</p>
+
+  <p>STILL HERE is a progressive web app, which means there is nothing to buy and nothing
+  to download from a store. You open it once and your browser installs it to your home
+  screen, where it sits with its own icon, its own window and all 150 reads available
+  offline. Pick your device:</p>
+
+  <h4>iPhone / iPad — Safari</h4>
+  <ol class="steps">
+    <li>Open the app in Safari: <a href="index.html">fyosamu.github.io/still-here</a></li>
+    <li>Tap the <b>Share</b> button (the square with the arrow)</li>
+    <li>Scroll down and tap <b>Add to Home Screen</b></li>
+    <li>Tap <b>Add</b> — the icon is on your home screen</li>
+  </ol>
+
+  <h4>Android — Chrome</h4>
+  <ol class="steps">
+    <li>Open the app in Chrome: <a href="index.html">fyosamu.github.io/still-here</a></li>
+    <li>Tap the <b>⋮</b> menu in the corner</li>
+    <li>Tap <b>Install app</b> (older versions say <b>Add to Home screen</b>)</li>
+    <li>Confirm — it appears in your app drawer</li>
+  </ol>
+
+  <h4>Computer — Chrome, Edge or Brave</h4>
+  <ol class="steps">
+    <li>Open <a href="index.html">the app</a> in the browser</li>
+    <li>Click the <b>install icon</b> at the right end of the address bar — or the ⋮ menu → <b>Install STILL HERE</b></li>
+    <li>Confirm — it opens in its own window and pins to your taskbar or dock</li>
+  </ol>
+
+  <div class="ad-slot ad-slot--page">
+    <span class="ad-label">Advertisement</span>
+    <iframe src="ad/300x250.html" width="300" height="250" scrolling="no" frameborder="0" loading="lazy" title="Advertisement"></iframe>
+  </div>
+
+  <h4>What you get</h4>
+  <ul class="ticks">
+    <li>150 short reads — about a minute each — across six categories</li>
+    <li>Works with no connection after the first visit</li>
+    <li>No account, no email, no sign-up, nothing to cancel</li>
+    <li>Every read also has its own link you can share</li>
+  </ul>
+
+  <h4>Why there is no store listing</h4>
+  <p>It runs in the browser, so there is no store fee, no review queue and no APK file to
+  install from outside a store. Updates land the moment the page changes — you never have
+  to update anything. Free, ad-supported, and nothing is sold or collected.</p>
+
+  <p class="lede" style="margin-top:26px">Ready? <a href="index.html">Open STILL HERE &rarr;</a></p>
+
+  <p style="margin-top:34px"><a class="back" href="index.html">← Back to the collection</a></p>
+</article>
+
+<footer class="foot">
+  <img src="logo.svg" alt="" class="foot-logo" />
+  <nav class="foot-links">
+    <a href="get.html">Download</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="muted">Made for people who got a seat. Don't waste it.</p>
+</footer>
+
+<script>
+  const c = document.getElementById('stars'), x = c.getContext('2d');
+  let w, h, p = [];
+  const build = () => {
+    w = c.width = innerWidth; h = c.height = innerHeight;
+    p = Array.from({length: Math.round(w*h/5200)}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      r: Math.random()*1.4+.2, s: Math.random()*.22+.04, a: Math.random()*.7+.25}));
+  };
+  const draw = () => {
+    x.clearRect(0,0,w,h);
+    for (const s of p) {
+      s.y += s.s; if (s.y > h) { s.y = -2; s.x = Math.random()*w; }
+      x.globalAlpha = s.a; x.fillStyle = '#fff';
+      x.beginPath(); x.arc(s.x, s.y, s.r, 0, 6.284); x.fill();
+    }
+    requestAnimationFrame(draw);
+  };
+  build(); addEventListener('resize', build); draw();
+</script>
+</body>
+</html>

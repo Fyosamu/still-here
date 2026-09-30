@@ -257,6 +257,7 @@ const CHROME = `  <a class="back" href="../index.html">&larr; Still Here home</a
     <nav>
       <a href="../index.html">Home</a>
       <a href="../all.html">All 150 reads</a>
+      <a href="../get.html">Download</a>
       <a href="../about.html">About</a>
       <a href="../privacy.html">Privacy Policy</a>
       <a href="../contact.html">Contact</a>
@@ -289,6 +290,7 @@ const sitemap = [
 sitemap.push(
   `  <url><loc>${APP}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
   `  <url><loc>${url("all.html")}</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+  `  <url><loc>${url("get.html")}</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>`,
   `  <url><loc>${url("about.html")}</loc><priority>0.5</priority></url>`,
   `  <url><loc>${url("privacy.html")}</loc><priority>0.3</priority></url>`,
   `  <url><loc>${url("contact.html")}</loc><priority>0.3</priority></url>`

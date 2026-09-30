@@ -664,10 +664,25 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();              // keep the browser's own banner out of the way
     deferredPrompt = e;
     installBtn.hidden = false;
+    installBtn.textContent = "⬇ Install the app";
   });
 
+  /* iOS Safari (and other browsers without the install prompt) never fire
+     beforeinstallprompt, so the button becomes a link to the manual steps
+     instead of staying invisible — a phone visitor must still find out how */
+  const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const touchOnly = isIOS || matchMedia("(pointer: coarse)").matches;
+  if (touchOnly) {
+    setTimeout(() => {
+      if (deferredPrompt || !installBtn.hidden) return;
+      installBtn.hidden = false;
+      installBtn.textContent = "⬇ How to install";
+    }, 1200);
+  }
+
   installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) { location.href = "get.html"; return; }
     deferredPrompt.prompt();
     try { await deferredPrompt.userChoice; } catch (e) { /* dismissed */ }
     deferredPrompt = null;

@@ -359,6 +359,15 @@ button{font-family:inherit;cursor:pointer}
 .page h4{margin-top:28px;font-size:16px;color:var(--a1);letter-spacing:.06em}
 .page p{color:#C6CCF0;line-height:1.85;font-size:15px;margin-top:12px}
 .page a{color:var(--a1)}
+/* install guide (get.html) */
+.page ol.steps{counter-reset:s;margin:12px 0 0;padding-left:26px;
+  color:#C6CCF0;line-height:1.8;font-size:15px}
+.page ol.steps li{margin:7px 0}
+.page ol.steps b{color:#E9EDFF}
+.page ul.ticks{list-style:none;margin:12px 0 0;padding:0}
+.page ul.ticks li{position:relative;padding:8px 0 8px 30px;color:#C6CCF0;
+  line-height:1.7;font-size:15px;border-bottom:1px solid rgba(255,255,255,.07)}
+.page ul.ticks li::before{content:"\\2713";position:absolute;left:0;color:#3BE0C8;font-weight:700}
 .back{display:inline-block;margin-bottom:22px;color:var(--muted);text-decoration:none;font-size:13px}
 .back:hover{color:var(--a1)}
 
