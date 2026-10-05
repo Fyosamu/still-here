@@ -369,7 +369,7 @@ directories that are readable by crawlers — per
 | **Web Apps Directory** | 530 | ⏳ submitted 2026-09-30 — free standard review, up to four weeks |
 | **pwastore.site** | — | ⏳ submitted 2026-09-30 — "review within 48 hours" |
 | **pwa.mobi registry** | — | ⏳ PR #2 → https://github.com/pwamobi/registry/pull/2 — their audit ran but GitHub is waiting for a maintainer to approve the workflow |
-| **store.app** | 1,350 | ❌ their `/list` returns **HTTP 502** (their outage) — retry later |
+| **store.app** | 1,350 | ❌ site is back up (2026-10-05) but `/list` still returns **HTTP 502** and the listing route now sits behind a *Login* — retry later |
 | findpwa.com | — | skip — serves 33 bytes and zero links to anything that isn't a browser |
 
 `pwaindex.io` exists too but requires creating an account (magic-link email).
@@ -477,7 +477,7 @@ shortlist (only three of the big four directories are readable — see §11) plu
 | **pwa.directory** | ✅ **live** → https://pwa.directory/directory/still-here (approved 2026-10-04) |
 | **pwaindex.io** | ⚠️ account created **and email verified**, but submission is blocked by *their* bug: the duplicate check matches on host suffix, so every `*.github.io` URL is told "already in the index" (it offers someone else's portfolio). Needs their fix. |
 | **webappfinder.app** | ❌ "Add an app" is a **curator tool** — it only generates JSON for their own `src/data/apps.json`. No public path, no repo link. |
-| **store.app** | ❌ still HTTP 502 (their outage) |
+| **store.app** | ❌ site is back, but `/list` is still HTTP 502 (now behind a Login) |
 | **AlternativeTo** | ❌ Cloudflare Turnstile never resolves from this IP — same failure as the Adsterra dashboard |
 | **findpwa.com** | ❌ 33-byte responses, no links out — worthless |
 
@@ -679,6 +679,17 @@ card (Live demo + Source), and the root `robots.txt` now lists
 - Telegram messages end with the install line + `/get.html`
 - `videos.md` and `reddit.md` carry the same line; every count now says 162
 
+### Automation added 2026-10-05
+
+- **`.github/workflows/indexnow.yml`** — every push that touches a page runs
+  `verify-pages.js` and then `ping-indexnow.mjs`. Indexing signals no longer depend on
+  anyone remembering to run them. (Verified green: `actions/runs/37257628009`.)
+- **Repo metadata** — description now says what it is ("Free installable PWA: works
+  offline, no account, no sign-up") and the 10 topics include `progressive-web-app`,
+  `education`, `reading`.
+- The **social-preview image** (`og.png`) can no longer be set through the REST API —
+  GitHub removed that endpoint; it is a 10-second job in *Settings → Social preview*.
+
 ### Listings on 2026-10-05
 
 | Destination | Status |
@@ -689,4 +700,4 @@ card (Live demo + Source), and the root `robots.txt` now lists
 | pwastore.site | ⏳ submitted 09-30, "within 48 hours" |
 | awesome-pwa PR #519 | ⏳ open, mergeable, no comments |
 | pwa.mobi PR #2 | ⏳ open — their audit is waiting on a maintainer to approve the workflow |
-| store.app | ❌ still HTTP 502 (their outage) |
+| store.app | ❌ site is back, but `/list` is still HTTP 502 (now behind a Login) |
