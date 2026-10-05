@@ -12,6 +12,22 @@
   "lang": "en",
   "dir": "ltr",
   "categories": ["education", "lifestyle", "books", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "All 150 reads",
+      "short_name": "All reads",
+      "description": "Every read, one list, six categories",
+      "url": "./all.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Download and share",
+      "short_name": "Download",
+      "description": "Install it on another phone or send it to someone",
+      "url": "./get.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
   "icons": [
     { "src": "logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

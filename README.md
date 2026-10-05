@@ -667,6 +667,12 @@ it means a new identity and a new submission.
 Publishing is the only step that costs money or needs an account — a Partner Center
 developer account (one-time **$19** for an individual). The package itself needs neither.
 
+It is also **published as a download**: https://github.com/Fyosamu/still-here/releases/tag/v1.0.1
+→ `still-here-windows.zip`, linked from `get.html` under *Windows — the app as a file*.
+A Release is a download surface with no account, no review queue and no store, and it keeps
+the 9 MB binary out of the git history. Regenerating the package only needs the asset
+re-uploaded (`make-release.mjs` logic: `POST /releases` + upload).
+
 ### A backlink from your own portfolio
 
 `fyosamu.github.io` → *Real projects, already built* carries a **STILL HERE — reading PWA**
