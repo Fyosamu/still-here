@@ -1,5 +1,9 @@
 # STILL HERE — setup & launch
 
+**[Open the app](https://fyosamu.github.io/still-here/)** ·
+**[Install guide](https://fyosamu.github.io/still-here/get.html)** ·
+**[Windows package (zip)](https://github.com/Fyosamu/still-here/releases/download/v1.0.1/still-here-windows.zip)**
+
 150 reads · 6 categories · dark space UI · 2-column layout · ad-supported · **costs $0**
 
 ---
