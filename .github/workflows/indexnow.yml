@@ -1,0 +1,45 @@
+name: verify + IndexNow
+
+# Every push that touches a page re-checks the build and then tells Bing /
+# Yandex / DuckDuckGo the URL list changed. Free, no account, no secrets —
+# the IndexNow key file is already served from the site root.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "*.html"
+      - "c/**"
+      - "category/**"
+      - "ad/**"
+      - "manifest.json"
+      - "app.js"
+      - "styles.css"
+      - "sitemap.xml"
+      - "tools/verify-pages.js"
+      - "tools/ping-indexnow.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify links, tags and the sitemap
+        run: node tools/verify-pages.js
+
+      - name: Submit the URL list to IndexNow
+        run: node tools/ping-indexnow.mjs
