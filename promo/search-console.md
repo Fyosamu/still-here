@@ -1,4 +1,4 @@
-# Google Search Console — the 161 pages are invisible right now
+# Google Search Console — the 162 pages are invisible right now
 
 Right now `site:fyosamu.github.io` returns **nothing**. Google has not been told the
 pages exist. IndexNow already covers Bing, Yandex and DuckDuckGo; Google needs an
@@ -45,7 +45,7 @@ If it says *file not found* instead, you picked the wrong method: go back and ch
 still-here/sitemap.xml
 ```
 
-That single file lists all **161 URLs**: the app, `all.html`, the six category hubs,
+That single file lists all **162 URLs**: the app, `all.html`, the six category hubs,
 about/privacy/contact and `c/1.html … c/150.html`. Google picks it up on its own
 schedule — usually within a few days for a first crawl.
 
@@ -77,8 +77,8 @@ footer links `all.html`.
 | Report | Why it matters |
 |---|---|
 | **Performance** | Which queries bring impressions. This is how you find out which cards are worth making into videos. |
-| **Pages** (indexing) | How many of the 161 are actually indexed. Expect "Discovered – not crawled" for weeks on a new site — normal. |
-| **Sitemaps** | Confirms 161 submitted, 161 found. |
+| **Pages** (indexing) | How many of the 162 are actually indexed. Expect "Discovered – not crawled" for weeks on a new site — normal. |
+| **Sitemaps** | Confirms 162 submitted, 162 found. |
 
 Come back weekly. Nothing here is urgent after the first submission.
 

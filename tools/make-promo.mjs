@@ -157,7 +157,8 @@ for (let d = 0; d < days; d++) {
   const message =
     `STILL HERE · day ${d + 1} · 5 short reads\n\n` +
     `${lines.join("\n\n")}\n\n` +
-    `All 150 are free, work offline and need no account:\n${BASE}`;
+    `All 150 are free, work offline and need no account:\n${BASE}` +
+    `\nPut it on your home screen — 2 taps, no app store:\n${BASE}get.html`;
 
   tgRows.push([
     d + 1,
@@ -172,6 +173,22 @@ const tgCsv = writeCsv(
   ["Day", "Cards", "Message", "Chars"],
   tgRows
 );
+
+/* ------------------------------------------------------- the pinned X post */
+/* One post that never rotates: it is the download link, so it points at the
+   install guide instead of a card. Sized by X's own counting (URL = 23). */
+const pinnedLines = [
+  "STILL HERE — 150 one-minute reads that put your life in perspective.",
+  "",
+  "The math of a $30,000 apartment. The one cell that became you. The tapeworm you should be grateful you're not.",
+  "",
+  "Free, no account, works offline. Put it on your home screen:",
+  `${BASE}get.html`,
+  "#stillhere",
+];
+const pinned = pinnedLines.join("\n");
+const pinnedPath = path.join(OUT, "x-pinned-post.txt");
+fs.writeFileSync(pinnedPath, `${pinned}\n`, "utf8");
 
 /* Same messages, but as plain text with a marker between them — copying a
    multi-line cell out of a spreadsheet is miserable, this is not. */
@@ -227,8 +244,14 @@ const videoCsv = writeCsv(
 );
 
 /* -------------------------------------------------------------- report */
+const pinnedLen = xLen(pinned);
+if (pinnedLen > 280) {
+  console.error(`pinned post is ${pinnedLen} chars — X limit is 280`);
+  process.exit(1);
+}
 const lens = xRows.map((r) => r[4]);
 console.log(`posts   : ${xRows.length} (${Math.min(...lens)}–${Math.max(...lens)} chars, X limit 280)`);
+console.log(`pinned  : ${pinnedLen} chars, ${path.relative(ROOT, pinnedPath)}`);
 console.log(`days    : ${days} × ${PER_DAY} cards`);
 console.log(`videos  : ${vRows.length} over ${Math.ceil(vRows.length / PER_DAY_V)} days × ${PER_DAY_V}`);
 console.log(`wrote   : ${path.relative(ROOT, xCsv)}`);

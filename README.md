@@ -26,7 +26,7 @@
 |---|---|
 | `c/1.html … c/150.html` | One indexable page per card (`tools/build-pages.mjs`) |
 | `category/` | Six category hub pages — the middle level of the site |
-| `all.html` + `sitemap.xml` | Crawl entry point + 161 URLs |
+| `all.html` + `sitemap.xml` | Crawl entry point + 162 URLs |
 | `content.json` | Machine-readable dump of all 150 cards |
 | `pins/` | 150 Pinterest pins (1000×1500) + `pins/pins.csv` |
 | `videos.md` / `videos.csv` | 150 short-video scripts with SRT subtitles |
@@ -365,15 +365,18 @@ directories that are readable by crawlers — per
 | Directory | Entries | Status |
 |---|---|---|
 | **PWAStore.io** | 818 | ✅ **LIVE** → https://www.pwastore.io/app/still-here |
-| **pwa.directory** | 736 | ⏳ `in_review` — id `45d0df0d-2450-4a0b-b870-d4dd44268e28`, up to 4 weeks, receipt emailed to `akhob59@gmail.com` |
-| **store.app** | 1,350 | ❌ their `/list` returns **HTTP 502** (their outage, 4 attempts) — retry later |
+| **pwa.directory** | 736 | ✅ **LIVE** (catalogued 2026-10-04) → https://pwa.directory/directory/still-here |
+| **Web Apps Directory** | 530 | ⏳ submitted 2026-09-30 — free standard review, up to four weeks |
+| **pwastore.site** | — | ⏳ submitted 2026-09-30 — "review within 48 hours" |
+| **pwa.mobi registry** | — | ⏳ PR #2 → https://github.com/pwamobi/registry/pull/2 — their audit ran but GitHub is waiting for a maintainer to approve the workflow |
+| **store.app** | 1,350 | ❌ their `/list` returns **HTTP 502** (their outage) — retry later |
 | findpwa.com | — | skip — serves 33 bytes and zero links to anything that isn't a browser |
 
 `pwaindex.io` exists too but requires creating an account (magic-link email).
 
 ### Search engines
 
-IndexNow accepted a submission (**HTTP 202**) for all 4 pages — this is what
+IndexNow accepted a submission (**HTTP 200**) for all 162 pages — this is what
 Bing, Yandex, Seznam and DuckDuckGo's IndexNow partners use. Free, no account.
 
 ```
@@ -471,7 +474,7 @@ shortlist (only three of the big four directories are readable — see §11) plu
 |---|---|
 | **awesome-pwa** (GitHub, curated) | ✅ **PR #519 open** → https://github.com/hemanth/awesome-pwa/pull/519 — added under *Apps → Education and Reading* |
 | **PWAStore.io** | ✅ live → https://www.pwastore.io/app/still-here |
-| **pwa.directory** | ⏳ `in_review`, id `45d0df0d-2450-4a0b-b870-d4dd44268e28` |
+| **pwa.directory** | ✅ **live** → https://pwa.directory/directory/still-here (approved 2026-10-04) |
 | **pwaindex.io** | ⚠️ account created **and email verified**, but submission is blocked by *their* bug: the duplicate check matches on host suffix, so every `*.github.io` URL is told "already in the index" (it offers someone else's portfolio). Needs their fix. |
 | **webappfinder.app** | ❌ "Add an app" is a **curator tool** — it only generates JSON for their own `src/data/apps.json`. No public path, no repo link. |
 | **store.app** | ❌ still HTTP 502 (their outage) |
@@ -511,7 +514,7 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 | Command | Writes |
 |---|---|
 | `node tools/build-pages.mjs` | `c/1.html … c/150.html`, `category/*.html`, `all.html`, `sitemap.xml`, `content.json` |
-| `node tools/verify-pages.js` | link / tag / sitemap check across all 161 pages |
+| `node tools/verify-pages.js` | link / tag / sitemap check across all 162 pages |
 | `python tools/make-pins.py` | `pins/001.jpg … pins/150.jpg`, `pins/pins.csv` |
 | `node tools/make-videos.mjs` | `videos.md`, `videos.csv` |
 | `python tools/make-reels.py` | `build/reels/001-….mp4 … 150-….mp4` + matching `.srt` (the finished videos) |
@@ -530,7 +533,7 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
   cards, and every card's breadcrumb links back to its category.
 - `all.html` links every card and is reachable from the app footer → the whole set is
   3 clicks from the root.
-- `node tools/verify-pages.js` walks all 161 pages checking local links, `<h1>` /
+- `node tools/verify-pages.js` walks all 162 pages checking local links, `<h1>` /
   canonical / description counts, tag balance and sitemap coverage.
 - After a push: re-POST the URL list to IndexNow (free, no account).
 
@@ -610,6 +613,7 @@ Everything a human would otherwise have to write by hand, pre-written in English
 | `promo/README.md` | Order of operations and the three rules that keep accounts alive |
 | `promo/search-console.md` | Google Search Console — **do this first**, 10–20 min once |
 | `promo/x-posts.csv` | 150 ready X/Bluesky posts, char-counted under 280 |
+| `promo/x-pinned-post.txt` | The one post to pin on the profile — the download link, not a card |
 | `promo/telegram-plan.csv` + `.txt` | 30 days × 5 cards, full message text |
 | `promo/video-plan.csv` | 75 days × 2 videos — file, caption, hashtags, link |
 | `promo/videos.md` | Where to upload them and what not to do |
@@ -619,3 +623,49 @@ Everything a human would otherwise have to write by hand, pre-written in English
 
 All of it needs accounts only you can make — the pack removes the writing, not the
 signing up. Start with `promo/README.md`.
+
+---
+
+## 15. ⬇️ Download round — a page people can install from — 2026-10-05
+
+### `get.html` — the install guide
+
+The app had no page that answered *"how do I get this app"*, and on iOS Safari
+`beforeinstallprompt` never fires, so the install button simply never appeared.
+
+- **iPhone / iPad** — Share → Add to Home Screen · **Android** — Chrome ⋮ → Install app ·
+  **Computer** — install icon in the address bar
+- Linked as **Download** in the footer of every page (162), in the sitemap, in IndexNow
+- `SoftwareApplication` JSON-LD: free, category, icon, `installUrl`
+- one 300×250 ad — the same unit About / Privacy / Contact use
+
+### iOS installs actually work now
+
+- `apple-mobile-web-app-capable`, `mobile-web-app-capable`,
+  `apple-mobile-web-app-title`, `apple-mobile-web-app-status-bar-style` on every page
+- `app.js`: on a touch device that never fires `beforeinstallprompt`, the button shows
+  **⬇ How to install** and opens `get.html` instead of staying hidden
+
+### A backlink from your own portfolio
+
+`fyosamu.github.io` → *Real projects, already built* carries a **STILL HERE — reading PWA**
+card (Live demo + Source), and the root `robots.txt` now lists
+`https://fyosamu.github.io/still-here/sitemap.xml` as a second sitemap.
+
+### Promo pack additions
+
+- `promo/x-pinned-post.txt` — 277 chars, points at `/get.html`: pin it first
+- Telegram messages end with the install line + `/get.html`
+- `videos.md` and `reddit.md` carry the same line; every count now says 162
+
+### Listings on 2026-10-05
+
+| Destination | Status |
+|---|---|
+| PWAStore.io | ✅ live → https://www.pwastore.io/app/still-here |
+| pwa.directory | ✅ **live** → https://pwa.directory/directory/still-here (2026-10-04) |
+| Web Apps Directory | ⏳ submitted 09-30, free review ≤4 weeks |
+| pwastore.site | ⏳ submitted 09-30, "within 48 hours" |
+| awesome-pwa PR #519 | ⏳ open, mergeable, no comments |
+| pwa.mobi PR #2 | ⏳ open — their audit is waiting on a maintainer to approve the workflow |
+| store.app | ❌ still HTTP 502 (their outage) |

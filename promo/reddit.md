@@ -44,6 +44,7 @@ The idea: 150 reads, six categories, each one about a minute long.
 - LOOSE THOUGHTS — the stuff that doesn't fit anywhere else
 
 Live: https://fyosamu.github.io/still-here/
+How to put it on your phone: https://fyosamu.github.io/still-here/get.html
 Every read also has its own page, e.g. https://fyosamu.github.io/still-here/c/76.html
 
 Honest bit: it's ad-supported, one banner per card click. That's the whole
@@ -74,7 +75,7 @@ generator (Node) emits:
 - category/*.html — six hub pages, so it's index → category → card instead of
   one index pointing at 150 unrelated URLs; each carries an ItemList of its 25
 - all.html — crawl entry point, linked from the footer
-- sitemap.xml — 161 URLs
+- sitemap.xml — 162 URLs
 
 plus a service worker for offline and a manifest so it installs. Ad slots are
 keyed from app.js so the static pages and the SPA use the same units.

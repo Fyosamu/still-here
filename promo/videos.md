@@ -15,6 +15,12 @@ row. Nothing needs writing.
 | `Hashtags` | paste after the caption |
 | `Link` | the card URL — also the one to put in comments if the caption truncates |
 
+Last line of every description, after the hashtags:
+
+```
+Free, no account, works offline. Install it: https://fyosamu.github.io/still-here/get.html
+```
+
 ## Where each one goes
 
 Upload the same file to all four. They are different audiences, and a video that
