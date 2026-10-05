@@ -522,6 +522,8 @@ keeps the app, the SEO pages, the pins and the scripts in sync.
 | `node tools/make-promo.mjs` | `promo/x-posts.csv`, `promo/telegram-plan.csv`, `promo/telegram-messages.txt` |
 | `node tools/verify-videos.js` | checks every hook, on-screen line, SRT cue and CSV column |
 | `python make-og.py` | `og.png` (1200×630) |
+| `node tools/live-check.mjs` | HTTP sweep of the **published** site — status, `<h1>`, footer Download link, corner ad on all 162 URLs |
+| `node tools/make-windows-package.mjs` | `build/windows/Still-Here-windows-package.zip` — signed `.msixbundle` + sideload `.msix` (gitignored, ~9 MB) |
 
 ### 1 · SEO pages
 
@@ -645,6 +647,25 @@ The app had no page that answered *"how do I get this app"*, and on iOS Safari
   `apple-mobile-web-app-title`, `apple-mobile-web-app-status-bar-style` on every page
 - `app.js`: on a touch device that never fires `beforeinstallprompt`, the button shows
   **⬇ How to install** and opens `get.html` instead of staying hidden
+
+### Windows package — built and signed, ready to install
+
+`node tools/make-windows-package.mjs` POSTs the manifest to PWABuilder's packaging
+service and writes `build/windows/Still-Here-windows-package.zip` (~9 MB, gitignored):
+
+| File inside the zip | What it is |
+|---|---|
+| `Still Here.msixbundle` | the modern package — this is what Microsoft Store takes |
+| `Still Here.sideload.msix` | installs **right now, no account**: unzip and run `install.ps1` |
+| `Still Here.classic.appxbundle` | fallback for older Windows builds |
+| `utils/pwainstaller.exe` + `install.ps1` | runs the sideload install (Windows 10 ≥ 19041) |
+
+Identity is ours, not PWABuilder's placeholder — package id **`Fyosamu.StillHere`**,
+publisher **`Fyosamu`**. Keep that package id stable once a Store listing exists: changing
+it means a new identity and a new submission.
+
+Publishing is the only step that costs money or needs an account — a Partner Center
+developer account (one-time **$19** for an individual). The package itself needs neither.
 
 ### A backlink from your own portfolio
 
