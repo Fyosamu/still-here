@@ -19,6 +19,8 @@ on:
       - "tools/verify-pages.js"
       - "tools/ping-indexnow.mjs"
   workflow_dispatch:
+  schedule:
+    - cron: '13 6 * * *'
 
 permissions:
   contents: read
